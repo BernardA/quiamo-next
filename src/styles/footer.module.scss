@@ -1,0 +1,42 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    grid-gap: 15px;
+    padding: 20px;
+    justify-content: space-evenly;
+    background-color: #2d5074;
+}
+
+.section {
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    display: grid;
+    align-content: space-between;
+}
+
+.sectionDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionP{
+    text-transform: none;
+    text-align: justify;
+    font-size: .8rem;
+}
+
+.sectionDivA{
+    font-weight: 600;
+    height: 40px;
+    font-size: .8rem;
+}
+
+.social {
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.socialImg {
+    width: 60px;
+}

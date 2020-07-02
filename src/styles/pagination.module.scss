@@ -1,0 +1,53 @@
+.pagination {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.paginationActive {
+    font-weight: bold;
+    line-height: 48px;
+}
+
+.paginationActiveLink {
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+    width: 30%;
+    margin: 0 auto;
+    border-radius: 30px;
+}
+
+.paginationButton {
+    width: 100%;
+}
+
+.paginationNav {
+    width: 100%;
+    line-height: 48px;
+    border-radius: 30px;
+}
+
+.paginationPrevious {
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.paginationNext {
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.paginationNav svg {
+    margin: 0 auto;
+    display: block;
+    height: 48px;
+    font-size: 3rem;
+}
+
+.paginationDisabled {
+    pointer-events: none;
+}

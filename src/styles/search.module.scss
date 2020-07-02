@@ -1,0 +1,21 @@
+.content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.search {
+    height: auto;
+}
+
+.adList {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: space-around;
+    > div {
+        flex: 0 0 280px;
+    }
+}
+
+
+

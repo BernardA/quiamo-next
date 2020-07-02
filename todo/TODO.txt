@@ -1,0 +1,87 @@
+
+
+TOP
+- search non existant ads
+    - create main cities table (~200) and adjust search template query to generate routes 
+    - handle no ads elegantly on /search template
+    - redirect 404 to /search temporary for other urls with non-existing ads or new ads still without built routes
+- add info on whether user is provider of service
+  - on register or later add user/categories
+  - possibility to add business name 
+  - user can choose categories he is willing to provide
+  - automatically add category when user makes offer
+- user verified/reputation on myads/bids
+- getGeo logic on header.js
+- criar dedicated page para entrada anuncios
+- add radius to search
+
+- add add friends
+
+OTHERS
+
+- sagas -> users.next, users.previous -> full list to indexeddb
+- datatables issue https://github.com/gregnb/mui-datatables/issues/1229
+- mailbox attachment viewer
+   -> nelmio-cors issue https://github.com/nelmio/NelmioCorsBundle/issues/150
+   -> iframe-resizer-react issue https://github.com/davidjbradshaw/iframe-resizer-react/issues/17
+- session idle extension does not seem to work
+- online handler -> fully test on Chrome
+- admin - user/ads implement server side search feature on datatables
+    -> ads per user
+    -> ads per category
+    -> ads active
+- admin - ads -> delete forever 
+    -> cascade bid
+- admin - users -> delete forever ???
+    -> cascade messages
+- admin - user/ads data on indexeddb
+- admin - unblock user
+- https://www.chromestatus.com/feature/5088147346030592 cookies warn on Chrome
+- verify load all routes directly to identify missing data problem
+- ******gatsby-node move common queries (cats, ads, users) IMPORTANT****
+
+WHERE LEFT OFF
+- translation confirm-user
+
+- admin populate data on adminChartAds
+- admin -> user profile edit / share form with account
+
+- review adinsert and searchads forms
+
+- user as provider 
+    - mark as provider  
+    - may add business name
+    - preferred categories, up to 5
+    - ask after registration if willing to provide/categories/business name
+    - ask for preferred categories/business name when making offer
+    - for provider  
+        - send email with new ads in those cats
+    - for client    
+        - show providers in vicinity for that service when ad insert
+        - possibility to send message with ad
+
+
+
+
+- create symfony user provider https://symfony.com/doc/current/security/user_provider.html#entity-user-provider
+- consider react-select
+https://developer.okta.com/blog/2018/08/23/symfony-react-php-crud-app
+
+https://auth0.com/blog/developing-modern-apps-with-symfony-and-react/
+https://reactjs.org/community/starter-kits.html
+https://www.gatsbyjs.org/tutorial/part-two/#using-global-styles
+https://www.gatsbyjs.org/docs/building-apps-with-gatsby/
+https://blog.hasura.io/building-a-dynamic-listing-web-app-with-pagination-and-dynamic-pages-using-gatsby-2ddee9ec2dc3/
+https://github.com/gatsbyjs/gatsby/tree/master/examples/simple-auth
+https://www.freecodecamp.org/news/how-to-get-started-with-gatsby-2-and-redux-ae1c543571ca/
+https://www.gatsbyjs.org/docs/client-data-fetching/
+
+https://github.com/DSchau/gatsby-mail
+https://www.gatsbyjs.com/build-apps-webinar-video/?submissionGuid=29d31ece-b833-428d-b364-059d4f192750
+
+- icons https://material.io/tools/icons/?style=baseline
+
+
+https://musing-davinci-538143.netlify.com/
+
+

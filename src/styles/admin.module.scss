@@ -1,0 +1,23 @@
+.editWrap{
+    > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 30px 0;
+        > button{
+            min-width: 180px;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .editWrap{
+        > div {
+            flex-direction: column;
+            > button {
+                margin-top: 20px;
+                width: '100%';
+            }
+        }
+    }
+}

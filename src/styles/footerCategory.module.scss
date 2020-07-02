@@ -1,0 +1,56 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 180px));
+    padding: 10px;
+    justify-content: space-evenly;
+
+    a {
+        text-decoration: none;
+    }
+
+    li {
+        color: #2d5074;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .root {
+        display: block;
+        margin: 0 auto;
+        max-width: 290px;
+    }
+}
+
+/*
+    [theme.breakpoints.down('xs')]: {
+        display: 'block',
+        margin: '0 auto',
+        maxWidth: '280px',
+    },
+*/
+.type {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.cat {
+    li {
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: .8rem;
+    }
+}
+
+.subcat {
+    li {
+        margin-left: 10px;
+        font-size: 0.8rem;
+    }
+}
+
+.empty {
+    visibility: hidden;
+}

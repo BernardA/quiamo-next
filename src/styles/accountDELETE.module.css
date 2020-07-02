@@ -1,0 +1,69 @@
+  #account td:first-child {
+      width: 40%;
+      padding: 4px 0 4px 24px;
+  }
+  
+  #profile_image {
+      width: 250px;
+  }
+  
+  #img_crop {
+      max-width: 100%;
+      text-align:center;
+  }
+  
+  #img_crop canvas {
+      display: inline;
+  }
+  
+  /**
+  * account_contacts page 
+  */
+  
+  .contact_name {
+      width: 80px;
+  }
+  
+  .contact_trash {
+      width: 30px;
+      
+  }
+
+@media only screen and (max-width: 760px){
+    #account_contacts .contact_row {
+        grid-template-columns: [vert1] 100px [vert2] auto [vert3] 60px [last-col];
+        grid-template-rows: [horiz1] 50% [horiz2] 50% [last-line] ;
+        height: 80px;
+        line-height: 40px;
+        display: grid; 
+        border-bottom: 1px solid #ccc;   
+    }
+
+    #account_contacts .contact_name {
+        grid-column-start: vert1;
+        grid-column-end: vert2;
+        grid-row-start: horiz1;
+        grid-row-end: horiz2;
+        border-bottom: initial;
+        width: auto;
+    }
+
+    #account_contacts .contact_trash {
+        grid-column-start: vert3;
+        grid-column-end: last-col;
+        grid-row-start: horiz1;
+        grid-row-end: horiz3;
+        border-bottom: initial;
+        width: auto;
+        line-height: 80px;
+    }
+
+    #account_contacts .contact_email {
+        grid-column-start: vert1;
+        grid-column-end: vert3;
+        grid-row-start: horiz2;
+        grid-row-end: last-line;
+        border-bottom: initial;
+        width: auto;
+    }
+}

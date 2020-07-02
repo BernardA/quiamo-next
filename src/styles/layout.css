@@ -1,0 +1,267 @@
+/**
+* global styles
+*/
+/*
+https://moderncss.dev/generating-font-size-css-rules-and-creating-a-fluid-type-scale/
+*/
+ h4, .h4 {
+	 font-size: 1.333rem;
+	 line-height: calc(2px + 2ex + 2px);
+	 margin-bottom: 0.65em;
+	 font-size: min(max(1rem, 4.333vw), 1.333rem);
+}
+ h3, .h3 {
+	 font-size: 1.776889rem;
+	 line-height: calc(2px + 2ex + 2px);
+	 margin-bottom: 0.65em;
+	 font-size: min(max(1.19051563rem, 4.58637337vw), 1.776889rem);
+}
+ h2, .h2 {
+	 font-size: 2.368593037rem;
+	 line-height: calc(2px + 2ex + 2px);
+	 margin-bottom: 0.65em;
+	 font-size: min(max(1.5869573348rem, 4.7816357022vw), 2.368593037rem);
+}
+ h1, .h1 {
+	 font-size: 3.1573345183rem;
+	 line-height: calc(2px + 2ex + 2px);
+	 margin-bottom: 0.65em;
+	 font-size: min(max(2.1154141273rem, 5.041920391vw), 3.1573345183rem);
+}
+ p, li, h1, h2, h3, h4 {
+	 word-break: break-word;
+	 hyphens: auto;
+	 margin-top: 0;
+}
+ * {
+	 box-sizing: border-box;
+}
+ body {
+	 font-size: 1rem;
+     font-family: 'Roboto', sans-serif;
+	 line-height: 1.5;
+	 min-height: 100vh;
+	 /*display: grid;
+	 place-content: center;*/
+	 margin: 0 2rem;
+	 color: #333;
+     min-width: 320px;
+}
+
+a {
+    color: #3273dc;
+    cursor: pointer;
+    text-decoration: none;
+}
+/*
+body {
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    margin: 0 auto;
+    min-width: 320px;
+}
+*/
+#__next {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.center_300 {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.icon_container {
+    cursor: pointer;
+}
+
+main {
+    min-height: 500px;
+    margin: 0 auto;
+    padding: 0 10px;
+    background-color: #fff;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.no_show {
+    display: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+button span {
+    pointer-events: none;
+}
+
+.no_click {
+    pointer-events: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+.loading_indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+}
+
+.grid {
+    display: grid;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex_column {
+    flex-direction: column;
+}
+
+.flex_wrap {
+    flex-wrap: wrap;
+}
+
+/**
+* override material-ui by specificity 
+*/
+
+#noShadow {
+    box-shadow: none;
+}
+
+/**
+* form
+*/
+
+form {
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.form_input{
+    margin:0 auto 15px;
+}
+
+.form_input div:first-child {
+    margin:0;
+}
+
+.form_submit div:first-child {
+    justify-content: space-between;
+}
+
+.form_select div:first-child {
+    display:grid;
+}
+
+.form_error{
+    color: red;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+.formGroup {
+    margin-right: 0;
+    justify-content: space-between;
+    line-height: 45px;
+}
+
+.passwordOk {
+    color: green
+}
+
+
+/**
+* pagination
+*/
+
+#pagination.grid {
+    grid-template-columns: repeat(auto-fit, minmax(35px, auto));
+    text-align: center;
+    align-items: center;
+}
+
+#pagination.grid div:first-child {
+    justify-self: start;
+}
+
+#pagination.grid nav:last-child {
+    justify-self: end;
+}
+
+#pagination li:hover {
+    background-color: #ccc;
+}
+
+#pagination li {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+
+#pagination li button {
+    background-color: #fff;
+    box-shadow: none;
+    width: 40px;
+    height: 40px;
+}
+
+#pagination ul {
+    justify-content: flex-end;
+}
+
+.dialog_toolbar {
+    justify-content: flex-end
+}
+
+.dialog_toolbar button {
+    display: block;
+}
+
+.page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+#pagination .page-item.active .page-link {
+    z-index: 1;
+    background-color: #e0e0e0;
+}
+
+ul.pagination li.page-item.active a.page-link {
+    color: #445565 !important;
+    background-color: #e3e7eb !important;
+    border-color: #ced4da !important;
+}
+
+.current-page {
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+  
+@media only screen and (max-width: 480px){
+    .content {
+        flex-direction: column;
+    }
+}

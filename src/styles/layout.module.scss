@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container > div:first-child {
+    flex-grow: 1;
+}

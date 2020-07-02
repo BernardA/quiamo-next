@@ -1,0 +1,35 @@
+.root {
+    text-align: center;
+}
+
+.header {
+    max-width: 350px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.title {
+    text-transform: uppercase;
+}
+
+.subheader {
+    margin-top: 20px;
+}
+
+.content {
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 0;
+
+    > div:first-of-type {
+        margin: 20px 0;
+    }
+}
+
+.lineWrapSpan {
+    display: block;
+}
+
+.socialSignin {
+    width: 100%;
+}
