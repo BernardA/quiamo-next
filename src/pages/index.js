@@ -75,7 +75,6 @@ const Home = (props) => {
         ads,
         classes,
     } = props;
-    console.log('home props', props);
     // React.useEffect(() => localforage.setItem('categories', categories), []);
     return (
         <div className="container">
@@ -162,7 +161,7 @@ const queryQl = `query homePage {
 
 const apiQl = (data, variables = null) => {
     return axios
-        .post(process.env.API_GRAPHQL_URL, {
+        .post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
             query: data,
             variables,
         })

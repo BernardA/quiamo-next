@@ -42,7 +42,6 @@ import 'react-quill/dist/quill.snow.css';
 import Layout from '../components/layout';
 
 function MyApp(props) {
-    console.log('my app props', props);
     const { Component, pageProps } = props;
     React.useEffect(() => {
         // Remove the server-side injected CSS.

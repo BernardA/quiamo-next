@@ -1,7 +1,10 @@
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import AdCard from './adCard';
-import { AVATAR_PLACEHOLDER_PATH, USER_IMAGE_DIRECTORY } from '../parameters';
+import { 
+    USER_IMAGE_DIRECTORY,
+    AVATAR_PLACEHOLDER_PATH,
+} from '../parameters';
 
 const styles = (theme) => ({
     scroller: {
@@ -26,9 +29,9 @@ const RecentAds = (props) => {
     const adList = () => {
         const tags = ads.edges.map((ad) => {
             // if user has no img on profile, get placeholder img
-            let imgPath = `${process.env.API_HOST}${AVATAR_PLACEHOLDER_PATH}`;
+            let imgPath = `${process.env.NEXT_PUBLIC_API_HOST}${AVATAR_PLACEHOLDER_PATH}`;
             if (ad.node.user.image) {
-                imgPath = `${process.env.API_HOST}${USER_IMAGE_DIRECTORY}${ad.node.user.image.filename}`;
+                imgPath = `${process.env.NEXT_PUBLIC_API_HOST}${USER_IMAGE_DIRECTORY}${ad.node.user.image.filename}`;
             }
             return (
                 <AdCard

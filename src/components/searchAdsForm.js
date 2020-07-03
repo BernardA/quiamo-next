@@ -17,6 +17,7 @@ import { required } from '../tools/validator';
 import { renderInput, renderRadio } from './formInputs';
 import AutocompleteGrouped from './formInputAutocompleteGrouped';
 import { urlWriter } from '../tools/functions';
+import { ROOT_CATEGORIES } from '../parameters';
 
 const styles = () => ({
     formWrapper: {
@@ -166,7 +167,7 @@ class SearchAdsForm extends React.Component {
     };
 
     render() {
-        const main = process.env.ROOT_CATEGORIES.split(',');
+        const main = ROOT_CATEGORIES.split(',');
         const {
             categories,
             adType,

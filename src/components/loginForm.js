@@ -1,12 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import Link from 'next/link';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { required, isEmail, isSpace } from '../tools/validator';
 import { renderInput } from './formInputs';
 import RenderPassword from './formRenderPassword';
 import styles from '../styles/loginForm.module.scss';
+import Link from '../components/link';
 
 class LoginForm extends React.Component {
     render() {

@@ -1,14 +1,11 @@
 /* eslint-disable react/prop-types */
-// import LoadingSVG from '../images/circles.svg';
-// import { LOADING_INDICATOR_IMG } from '../parameters';
-
+import { LOADING_INDICATOR_IMG } from '../parameters';
 
 export const LoadingVisibility = (props) => {
     if (props.pastDelay) {
         return (
             <div className="loading_indicator">
-                Loading...
-                { /* <img src={LoadingSVG} alt="loading" /> */ }
+                <img src={LOADING_INDICATOR_IMG} alt="loading" />
             </div>
         );
     }
@@ -18,8 +15,7 @@ export const LoadingVisibility = (props) => {
 export const Loading = () => {
     return (
         <div className="loading_indicator">
-            Loading...
-            {/* <img src={LoadingSVG} alt="loading" /> */}
+            <img src={LOADING_INDICATOR_IMG} alt="loading" />
         </div>
     );
 };

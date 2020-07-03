@@ -208,7 +208,7 @@ const api = (
     if (endpoint !== 'favicon') {
         localforage.setItem('lastActiveAt', Now());
     }
-    let url = `${process.env.API_REST_URL}${urlSuffix}`;
+    let url = `${process.env.NEXT_PUBLIC_API_REST_URL}${urlSuffix}`;
     if (endpoint !== API_REST) {
         url = urlSuffix;
     }
@@ -234,7 +234,7 @@ const api = (
 const apiQl = (data, variables = null) => {
     // update last active on indexeddb
     localforage.setItem('lastActiveAt', Now());
-    return axios.post(process.env.API_GRAPHQL_URL, {
+    return axios.post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
         query: data,
         variables,
     }).then((response) => {
@@ -246,7 +246,7 @@ const apiStd = (
     urlSuffix,
     data = null,
 ) => {
-    const url = `${process.env.API_HOST}${urlSuffix}`;
+    const url = `${process.env.NEXT_PUBLIC_API_HOST}${urlSuffix}`;
     return axios.post(
         url,
         data,
@@ -600,7 +600,7 @@ function* postRefreshToken(action) {
 }
 
 function* getCheckOnlineStatus() {
-    const url = `${process.env.LOCAL_HOST}/icons/icon-48x48.png`;
+    const url = `${process.env.NEXT_PUBLIC_LOCAL_HOST}/icons/icon-48x48.png`;
     try {
         yield call(api, 'get', url, null, 'favicon', false);
         yield put({

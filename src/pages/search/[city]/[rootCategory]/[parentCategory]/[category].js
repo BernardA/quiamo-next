@@ -17,6 +17,7 @@ import SearchAdsForm from '../../../../../components/searchAdsForm';
 import styles from '../../../../../styles/search.module.scss';
 import stylesPagination from '../../../../../styles/pagination.module.scss';
 import { actionGetAdsNext, actionGetAdsPrevious } from '../../../../../store/actions';
+import { ROOT_CATEGORIES } from '../../../../../parameters';
 
 class Search extends React.Component {
     constructor(props) {
@@ -197,7 +198,6 @@ Search.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    console.log('state', state);
     return {
         ...state.ad,
         searchAdsForm: state.form.SearchAdsForm,
@@ -284,7 +284,7 @@ const queryQl = `
 
 const apiQl = (data, variables = null) => {
     return axios
-        .post(process.env.API_GRAPHQL_URL, {
+        .post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
             query: data,
             variables,
         })
@@ -300,15 +300,6 @@ export async function getStaticPaths() {
     categories = categories.data.categories;
     cities = cities.data.collectionQueryAddresses;
     const paths = [];
-    // main /search route
-    paths.push({
-        params: {
-            city: '0',
-            rootCategory: '0',
-            parentCategory: '0',
-            category: '0',
-        },
-    });
     cities.forEach((city) => {
         categories.forEach((cat) => {
             if (cat.root && cat.root.title === cat.parent.title) {
@@ -347,14 +338,27 @@ export async function getStaticProps({ params }) {
     let cities = await getCities();
     categories = categories.data.categories;
     cities = cities.data.collectionQueryAddresses;
-    const { city, parentCategory, category } = params;
+    const { city, rootCategory, parentCategory, category } = params;
+
+    // validate parameters and redirect to 404 if fail
+    let is404 = false;
+    const main = ROOT_CATEGORIES.split(',');
+    const isValidRoot = main.filter((type) => {
+        return urlWriter(type) === rootCategory;
+    })
+    is404 = isValidRoot.length === 0;
+    const regexp = /[-a-z]+/g
+    if (!city.match(regexp) || !parentCategory.match(regexp) || !category.match(regexp)) {
+        is404 = true;
+    }
+
     let variables = {
         city: null,
         categoryParent: null,
         categoryId: null,
     };
     if (city !== '0') {
-        // get city as in data bank
+        // get city as in data base
         const cityObj = cities.filter((c) => {
             return urlWriter(c.city) === city;
         })
@@ -392,6 +396,7 @@ export async function getStaticProps({ params }) {
             categories,
             cities,
             params,
+            is404,
         },
     };
 }

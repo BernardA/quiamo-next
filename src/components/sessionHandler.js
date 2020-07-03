@@ -14,11 +14,11 @@ import {
 } from '../store/actions';
 import NotifierDialog from './notifierDialog';
 import {
+    TOKEN_TTL,
     MAX_IDLE_TIME,
     IDLE_TIME_LOGOUT,
-    TOKEN_TTL,
-    COOKIE_SAME_SITE,
     COOKIE_MAX_AGE,
+    COOKIE_SAME_SITE,
 } from '../parameters';
 
 // session timing is initiated at login.js by setting
@@ -192,7 +192,7 @@ class SessionHandler extends React.Component {
             const options = {
                 path: '/',
                 sameSite: COOKIE_SAME_SITE,
-                secure: process.env.API_HOST.includes('https'),
+                secure: process.env.NEXT_PUBLIC_API_HOST.includes('https'),
                 maxAge: COOKIE_MAX_AGE,
             };
             cookies.set('isAdmin', isAdmin, options);

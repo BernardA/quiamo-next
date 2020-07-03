@@ -16,7 +16,6 @@ import LoggedMenu from './statusLoggedMenu';
 
 class Status extends React.Component {
     render() {
-        console.log('status props', this.props);
         const { cookies, location } = this.props;
         const username = cookies.get('username') || false;
         return (

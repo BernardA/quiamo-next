@@ -20,7 +20,6 @@ import {
     actionPostSocialLoginGoogle,
     actionPutUserToAd,
 } from '../store/actions';
-import { GOOGLE_SOCIAL_LOGIN } from '../parameters';
 import styles from '../styles/login.module.scss';
 import Link from '../components/link';
 
@@ -63,8 +62,6 @@ class Login extends React.Component {
 
     handlePostLoginOk = () => {
         const { roles, router } = this.props;
-        console.log('roles', roles);
-        console.log('router', router);
         // get referred path, ie, user intended url when redirected to login
         const isAdmin =
             !!roles.includes('ROLE_ADMIN') ||
@@ -172,7 +169,6 @@ class Login extends React.Component {
     };
 
     render() {
-        console.log('LOGIN props', this.props);
         const { isLoading, isOnline, router } = this.props;
         const { isErrorSocialLogin } = this.state;
         return (
@@ -215,7 +211,7 @@ class Login extends React.Component {
                                                     styles.socialSignin
                                                 }
                                                 provider="google"
-                                                appId={GOOGLE_SOCIAL_LOGIN}
+                                                appId={process.env.NEXT_PUBLIC_GOOGLE_SOCIAL_LOGIN}
                                                 onLoginSuccess={
                                                     this.handleSocialLogin
                                                 }

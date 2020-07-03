@@ -39,7 +39,7 @@ const UserProfileImage = (props) => {
                 >
                     <Paper className={classes.paper}>
                         <img
-                            src={`${process.env.API_HOST}/images/user/${userProfile.image.filename}`}
+                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/user/${userProfile.image.filename}`}
                             alt="user profile"
                         />
                     </Paper>

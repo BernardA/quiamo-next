@@ -11,6 +11,7 @@ import Link from './link';
 import styles from '../styles/nav.module.scss';
 import NavMobileDrawer from './navMobileDrawer';
 import usePrevious from '../tools/hooks/usePrevious';
+import { ROOT_CATEGORIES } from '../parameters';
 
 const NavMobile = (props) => {
     const { cookies, categories, location } = props;
@@ -19,7 +20,7 @@ const NavMobile = (props) => {
     const [currentType, setCurrentType] = useState(null);
     const [locationPathname, setLocationPathname] = useState(location.pathname);
     const prevLocationPathname = usePrevious(locationPathname);
-    const main = process.env.ROOT_CATEGORIES.split(',');
+    const main = ROOT_CATEGORIES.split(',');
 
     useEffect(() => {
         if (cookies.get('roles')) {

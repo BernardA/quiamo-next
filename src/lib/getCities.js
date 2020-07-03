@@ -8,7 +8,7 @@ const queryQl = `query getCities {
 
 const apiQl = (data, variables = null) => {
     return axios
-        .post(process.env.API_GRAPHQL_URL, {
+        .post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
             query: data,
             variables,
         })

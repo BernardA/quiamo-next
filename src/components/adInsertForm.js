@@ -14,6 +14,7 @@ import { renderInput, renderRadio } from './formInputs';
 import RenderSelect from './formInputRenderSelect';
 import AutocompleteGrouped from './formInputAutocompleteGrouped';
 import { LoadingVisibility } from './loading';
+import { ROOT_CATEGORIES } from '../parameters';
 
 const minValue0 = minValue(0);
 const minValue1 = minValue(1);
@@ -112,7 +113,7 @@ class AdInsertForm extends React.Component {
     }
 
     render() {
-        const main = process.env.ROOT_CATEGORIES.split(',');
+        const main = ROOT_CATEGORIES.split(',');
         const {
             classes,
             handleSubmit,
@@ -304,7 +305,6 @@ AdInsertForm.propTypes = {
 const selector = formValueSelector('AdInsertForm');
 export default connect(
     (state) => {
-        console.log('state AD INSERT', state);
         const { adType, buyOrRent, budgetType } = selector(state, 'adType', 'buyOrRent', 'budgetType');
         return {
             adType,

@@ -7,6 +7,7 @@ import Link from './link';
 import styles from '../styles/nav.module.scss';
 import NavDrawer from './navDrawer';
 import usePrevious from '../tools/hooks/usePrevious';
+import { ROOT_CATEGORIES } from '../parameters';
 
 const Nav = (props) => {
     const { cookies, categories, location } = props;
@@ -15,8 +16,7 @@ const Nav = (props) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [locationPathname, setLocationPathname] = useState(location.pathname);
     const prevLocationPathname = usePrevious(locationPathname);
-    const main = process.env.ROOT_CATEGORIES.split(',');
-
+    const main = ROOT_CATEGORIES.split(',');
     useEffect(() => {
         if (cookies.get('roles')) {
             const roles = cookies.get('roles');
@@ -41,7 +41,7 @@ const Nav = (props) => {
                 <Link href="/">Home</Link>
             </MenuItem>
             <MenuItem disableGutters>
-                <Link href="/search/0/0/0/0">Search</Link>
+                <Link href="/search">Search</Link>
             </MenuItem>
             <MenuItem
                 onMouseEnter={() => setIsOpenProductsMenu(true)}
