@@ -18,6 +18,10 @@ TOP
 - add add friends
 
 OTHERS
+- UPDATE TO next.js 9.4.5 to solve issue headers already sent on search fallback
+  - check if possible to avoid validating routes on pre-build routes
+
+  
 
 - sagas -> users.next, users.previous -> full list to indexeddb
 - datatables issue https://github.com/gregnb/mui-datatables/issues/1229

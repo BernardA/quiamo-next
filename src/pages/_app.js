@@ -42,6 +42,7 @@ import 'react-quill/dist/quill.snow.css';
 import Layout from '../components/layout';
 
 function MyApp(props) {
+    // console.log('MY APP PROPS', props);
     const { Component, pageProps } = props;
     React.useEffect(() => {
         // Remove the server-side injected CSS.
@@ -62,9 +63,13 @@ function MyApp(props) {
             </Head>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Layout categories={pageProps.categories}>
+                {props.router.isFallback ?
                     <Component {...pageProps} />
-                </Layout>
+                    : (
+                        <Layout categories={pageProps.categories}>
+                            <Component {...pageProps} />
+                        </Layout>
+                    )}
             </ThemeProvider>
         </>
     );
