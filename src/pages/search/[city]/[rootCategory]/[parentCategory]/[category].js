@@ -35,13 +35,9 @@ class SearchCat extends React.Component {
 
     componentDidMount() {
         const { ads, router, is404 } = this.props;
-        // console.log('SEARCH CATEGORY MOUNT', this.props);
         if (is404) {
             router.push('/404');
-            console.log('IS404');
-        } else if (router.isFallback) {
-            console.log('ROUTER IS FALLBACK');
-        } else {
+        } else if (!router.isFallback) {
             this.updateState(ads, this.state.itemsPerPage);
             this.setState({ currentAds: ads.edges });
         }
@@ -56,7 +52,6 @@ class SearchCat extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('SEARCH CAT UPDATE', this.props);
         const { dataAds } = this.props;
         if (
             (!prevProps.dataAds && dataAds) ||
@@ -110,7 +105,6 @@ class SearchCat extends React.Component {
     };
 
     render() {
-        console.log('SEARCH CATS RENDER', this.props);
         const {
             categories,
             cities,
@@ -322,31 +316,21 @@ const validateParams = (params, categories) => {
         return urlWriter(type) === rootCategory;
     })
     is404 = isValidRoot.length === 0;
-    console.log('is404 after ROOT', is404);
     const regexp = /^[-a-z]+$/g
     // validate all against regexp
     // TODO consider validating city against full city list
     // always check first is is404 is not already true
     // as one false is enough to invalidate params
-    console.log('CITY MATCH', city.match(regexp) !== null);
-    console.log('CITY NOT ZERO', city === '0');
-    console.log('CITY NOT BRASIL', city === 'brasil' );
-    console.log('CITY ARRAY', [city.match(regexp)!== null , city === '0', city === 'brasil'])
-    console.log('CITY ALL TOGETHER',[city.match(regexp) !== null , city === '0', city === 'brasil'].includes(true) );
     is404 = !is404 && ![city.match(regexp) !== null, city === '0', city === 'brasil'].includes(true);
-    console.log('is404 after CITY', is404);
     is404 = !is404 && [parentCategory.match(regexp) !== null, category.match(regexp) !== null || category === '0'].includes(false);
-    console.log('is404 after REGEXP', is404);
     // detailed validation of parent categories
     if(!is404) {
         const isParent = categories.filter((cat) => {
             return cat.root && cat.root.title === cat.parent.title &&
                 urlWriter(cat.title) === parentCategory;
         });
-        console.log('IS PARENT', isParent);
         is404 = isParent.length === 0;
     }
-    console.log('is404 after PARENT', is404);
     // detailed validation of categories
     if(!is404 && category !== '0') {
         // check if category exists at all
@@ -355,7 +339,6 @@ const validateParams = (params, categories) => {
             urlWriter(cat.title) === category;
         })
         is404 = isCat.length === 0;
-        console.log('is404 after CAT ALL', is404);
         // check if category AND parent correspond
         if (!is404) {
             const isCatAndParent = categories.filter((cat) => {
@@ -364,7 +347,6 @@ const validateParams = (params, categories) => {
                 urlWriter(cat.title) === category;
             })
             is404 = isCatAndParent.length === 0;
-            console.log('is404 after CAT AND PARENT', is404);
         }
     }
     return is404;
@@ -418,7 +400,6 @@ export async function getStaticPaths() {
 
 // This also gets called at build time
 export async function getStaticProps({ params }) {
-    console.log('GET STATIC PROPS params', params);
     let categories = await getCategories();
     let cities = await getCities();
     categories = categories.data.categories;
@@ -426,7 +407,6 @@ export async function getStaticProps({ params }) {
     const { city, parentCategory, category } = params;
     const is404 = validateParams(params, categories);
 
-    console.log('is404', is404);
     let ads = [];
     if (!is404) { // only fetch data is params are valid
         let variables = {
@@ -440,14 +420,12 @@ export async function getStaticProps({ params }) {
             cityObj = cities.filter((c) => {
                 return urlWriter(c.city) === city;
             })
-            console.log('CITY', cityObj[0].city);
         }
         if (category === '0') {
             const parentCategoryObj = categories.filter((cat) => {
                 return cat.root && cat.root.title === cat.parent.title &&
                 urlWriter(cat.title) === parentCategory;
             });
-            console.log('PARENT CATEGORY', parentCategory);
             variables = {
                 city: cityObj[0] && cityObj[0].city || null,
                 categoryParent: parentCategoryObj[0].id,
@@ -467,7 +445,6 @@ export async function getStaticProps({ params }) {
                 categoryId: catObj[0].id,
             };
         }
-        console.log('VARIABLES', variables);
         const data = await apiQl(queryQl, variables);
         ads = data.data.ads;
     }
