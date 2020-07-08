@@ -1,0 +1,2 @@
+# quiamo-next
+nextjs version
