@@ -23,7 +23,7 @@ class SearchCat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentAds: this.props.ads.edges,
+            currentAds: !this.props.router.isFallback ? this.props.ads.edges : [],
             startCursor: null,
             endCursor: null,
             pageCount: 1,
@@ -52,7 +52,10 @@ class SearchCat extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { dataAds } = this.props;
+        const { dataAds, router: { isFallback, push }, is404 } = this.props;
+        if (!prevProps.is404 && is404) {
+            push('/404');
+        }
         if (
             (!prevProps.dataAds && dataAds) ||
             (prevProps.dataAds &&
@@ -60,6 +63,9 @@ class SearchCat extends React.Component {
                 prevProps.dataAds.edges !== this.props.dataAds.edges)
         ) {
             this.updateState(dataAds, prevState.itemsPerPage);
+        }
+        if (prevProps.router.isFallback && !isFallback && !is404) {
+            this.updateState(this.props.ads, this.state.itemsPerPage);
         }
     }
 
@@ -105,6 +111,7 @@ class SearchCat extends React.Component {
     };
 
     render() {
+        console.log('SEARCH PROPS', this.props);
         const {
             categories,
             cities,
@@ -127,7 +134,6 @@ class SearchCat extends React.Component {
             );
         };
         if (is404) {
-            // router.push('/404');
             return <h2>IS 404</h2>;
         }
         if (router.isFallback ) {
@@ -330,6 +336,15 @@ const validateParams = (params, categories) => {
                 urlWriter(cat.title) === parentCategory;
         });
         is404 = isParent.length === 0;
+        // check if root AND parent correspond
+        if (!is404) {
+            const isRootAndParent = categories.filter((cat) => {
+                return cat.root && cat.root.title === cat.parent.title &&
+                urlWriter(cat.title) === parentCategory &&
+                urlWriter(cat.root.title) === rootCategory;
+            })
+            is404 = isRootAndParent.length === 0;
+        }
     }
     // detailed validation of categories
     if(!is404 && category !== '0') {

@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-    const { location, categories } = props;
+    const { location, categories, isFallback } = props;
     const [locationPathname, setLocationPathname] = useState(location.pathname);
     const [isRgpd, setIsRgpd] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -137,10 +137,18 @@ export default function Header(props) {
                     </div>
                 </div>
                 {isBrowser ? (
-                    <Nav categories={categories} location={location} />
+                    <Nav 
+                        categories={categories} 
+                        location={location} 
+                        isFallback={isFallback}
+                    />
                 ) : null}
                 {isMobileMenuOpen && isMobile ? (
-                    <NavMobile categories={categories} location={location} />
+                    <NavMobile 
+                        categories={categories} 
+                        location={location} 
+                        isFallback={isFallback}
+                    />
                 ) : null}
             </header>
         </>
@@ -150,4 +158,5 @@ export default function Header(props) {
 Header.propTypes = {
     location: PropTypes.object.isRequired,
     categories: PropTypes.array.isRequired,
+    isFallback: PropTypes.bool.isRequired,
 };

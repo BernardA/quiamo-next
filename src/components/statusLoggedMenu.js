@@ -99,7 +99,7 @@ function StatusLoggedMenu(props) {
                 <StyledMenuItem className={classes.welcome}>
                     <ListItemText secondary={props.username} />
                 </StyledMenuItem>
-                <Link href="/account/" onClick={handleClose}>
+                <Link href="/account" onClick={handleClose}>
                     <StyledMenuItem>
                         <ListItemText primary="Account" />
                     </StyledMenuItem>
@@ -114,11 +114,13 @@ function StatusLoggedMenu(props) {
                         <ListItemText primary="My bids" />
                     </StyledMenuItem>
                 </Link>
-                <Link href="/mailbox/inbox/0" onClick={handleClose}>
-                    <StyledMenuItem>
-                        <ListItemText primary="Mailbox" />
-                    </StyledMenuItem>
-                </Link>
+                {/* }
+                    <Link href="/mailbox/inbox/0" onClick={handleClose}>
+                        <StyledMenuItem>
+                            <ListItemText primary="Mailbox" />
+                        </StyledMenuItem>
+                    </Link>
+                { */}
                 <StyledMenuItem onClick={handleClose}>
                     <ListItemText
                         onClick={logoutAction}

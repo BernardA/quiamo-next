@@ -39,10 +39,11 @@ import theme from '../styles/theme';
 // eslint-disable-next-line no-unused-vars
 import styles from '../styles/layout.css';
 import 'react-quill/dist/quill.snow.css';
+import 'react-image-crop/dist/ReactCrop.css';
 import Layout from '../components/layout';
 
 function MyApp(props) {
-    // console.log('MY APP PROPS', props);
+    console.log('MY APP PROPS', props);
     const { Component, pageProps } = props;
     React.useEffect(() => {
         // Remove the server-side injected CSS.
@@ -63,13 +64,12 @@ function MyApp(props) {
             </Head>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                {props.router.isFallback ?
+                <Layout 
+                    categories={pageProps.categories || []} 
+                    isFallback={props.router.isFallback}
+                >
                     <Component {...pageProps} />
-                    : (
-                        <Layout categories={pageProps.categories}>
-                            <Component {...pageProps} />
-                        </Layout>
-                    )}
+                </Layout>
             </ThemeProvider>
         </>
     );

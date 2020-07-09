@@ -27,7 +27,7 @@ const styles = () => ({
     },
 });
 
-const TextEditor = dynamic(import('./textEditor'), {
+const TextEditor = dynamic(() => import('./textEditor'), {
     ssr: false,
     loading: LoadingVisibility,
 });

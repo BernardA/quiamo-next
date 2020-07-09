@@ -7,7 +7,7 @@ import SessionHander from './sessionHandler';
 import styles from '../styles/layout.module.scss';
 
 
-const Layout = ({ children, categories }) => {
+const Layout = ({ children, categories, isFallback }) => {
     const router = useRouter();
     return (
         <div className={styles.container}>
@@ -16,6 +16,7 @@ const Layout = ({ children, categories }) => {
                     siteTitle="quiamo"
                     location={router}
                     categories={categories}
+                    isFallback={isFallback}
                 />
                 <SessionHander location={router} />
                 <>{children}</>
@@ -29,6 +30,7 @@ const Layout = ({ children, categories }) => {
 Layout.propTypes = {
     children: PropTypes.node.isRequired,
     categories: PropTypes.array.isRequired,
+    isFallback: PropTypes.bool.isRequired,
 };
 
 export default Layout;

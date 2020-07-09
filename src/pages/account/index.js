@@ -310,7 +310,7 @@ class Account extends React.Component {
                                         </Link>
                                         <Link
                                             className={classes.link}
-                                            href="/account/provider-insert"
+                                            href="/account/insert-provider"
                                         >
                                             <ListItem
                                                 button

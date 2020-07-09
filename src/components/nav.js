@@ -10,7 +10,7 @@ import usePrevious from '../tools/hooks/usePrevious';
 import { ROOT_CATEGORIES } from '../parameters';
 
 const Nav = (props) => {
-    const { cookies, categories, location } = props;
+    const { cookies, categories, isFallback, location } = props;
     const [isOpenProductsMenu, setIsOpenProductsMenu] = useState(false);
     const [isOpenServicesMenu, setIsOpenServicesMenu] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -43,42 +43,48 @@ const Nav = (props) => {
             <MenuItem disableGutters>
                 <Link href="/search">Search</Link>
             </MenuItem>
-            <MenuItem
-                onMouseEnter={() => setIsOpenProductsMenu(true)}
-                onMouseLeave={() => setIsOpenProductsMenu(false)}
-                className={styles.overrideItem}
-                disableGutters
-            >
-                <NavDrawer
-                    type={main[0]}
-                    open={isOpenProductsMenu}
-                    categories={categories}
-                />
-                <Link href="/" onClick={(event) => event.preventDefault}>
-                    <div className={styles.itemWrap}>
-                        {main[0]}
-                        <ExpandMore />
-                    </div>
-                </Link>
-            </MenuItem>
-            <MenuItem
-                onMouseEnter={() => setIsOpenServicesMenu(true)}
-                onMouseLeave={() => setIsOpenServicesMenu(false)}
-                className={styles.overrideItem}
-                disableGutters
-            >
-                <NavDrawer
-                    type={main[1]}
-                    open={isOpenServicesMenu}
-                    categories={categories}
-                />
-                <Link href="/" onClick={(event) => event.preventDefault}>
-                    <div className={styles.itemWrap}>
-                        {main[1]}
-                        <ExpandMore />
-                    </div>
-                </Link>
-            </MenuItem>
+            { !isFallback ? 
+                (
+                    <MenuItem
+                        onMouseEnter={() => setIsOpenProductsMenu(true)}
+                        onMouseLeave={() => setIsOpenProductsMenu(false)}
+                        className={styles.overrideItem}
+                        disableGutters
+                    >
+                        <NavDrawer
+                            type={main[0]}
+                            open={isOpenProductsMenu}
+                            categories={categories}
+                        />
+                        <Link href="/" onClick={(event) => event.preventDefault}>
+                            <div className={styles.itemWrap}>
+                                {main[0]}
+                                <ExpandMore />
+                            </div>
+                        </Link>
+                    </MenuItem>
+                ): null}
+            { !isFallback ?
+                (
+                    <MenuItem
+                        onMouseEnter={() => setIsOpenServicesMenu(true)}
+                        onMouseLeave={() => setIsOpenServicesMenu(false)}
+                        className={styles.overrideItem}
+                        disableGutters
+                    >
+                        <NavDrawer
+                            type={main[1]}
+                            open={isOpenServicesMenu}
+                            categories={categories}
+                        />
+                        <Link href="/" onClick={(event) => event.preventDefault}>
+                            <div className={styles.itemWrap}>
+                                {main[1]}
+                                <ExpandMore />
+                            </div>
+                        </Link>
+                    </MenuItem>
+                ): null}
             {isAdmin ?
                 (
                     <MenuItem disableGutters>
@@ -93,6 +99,7 @@ Nav.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
     categories: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
+    isFallback: PropTypes.bool.isRequired,
 };
 
 export default withCookies(Nav);
