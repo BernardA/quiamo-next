@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withCookies, Cookies } from 'react-cookie';
@@ -9,6 +8,8 @@ import {
 } from '../../store/actions';
 import { Loading } from '../../components/loading';
 import AdList from '../../components/myAdsList';
+import getCategories from '../../lib/getCategories';
+import { handlePrivateRoute } from '../../tools/functions';
 
 class MyAdsHome extends React.Component {
     constructor(props) {
@@ -90,3 +91,15 @@ export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
 )(MyAdsHome));
+
+export async function getServerSideProps(context) {
+    // https://github.com/vercel/next.js/discussions/11281
+    let categories = await getCategories();
+    categories = categories.data.categories;
+    handlePrivateRoute(context);
+    return {
+        props: {
+            categories,
+        },
+    };
+}

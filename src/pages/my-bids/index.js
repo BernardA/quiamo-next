@@ -11,6 +11,8 @@ import {
 import BidList from '../../components/myBidsList';
 import { Loading } from '../../components/loading';
 import NotifierDialog from '../../components/notifierDialog';
+import getCategories from '../../lib/getCategories';
+import { handlePrivateRoute } from '../../tools/functions';
 
 class MyBidsHome extends React.Component {
     constructor(props) {
@@ -168,3 +170,15 @@ export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
 )(MyBidsHome));
+
+export async function getServerSideProps(context) {
+    // https://github.com/vercel/next.js/discussions/11281
+    let categories = await getCategories();
+    categories = categories.data.categories;
+    handlePrivateRoute(context);
+    return {
+        props: {
+            categories,
+        },
+    };
+}

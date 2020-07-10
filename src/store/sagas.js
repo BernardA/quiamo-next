@@ -993,7 +993,7 @@ function* putRegisterSocial(action) {
         username: values.username,
         address: values.address,
     };
-    const url = `/users/${action.values.id}/register-social`;
+    const url = `/users/${action.values.id}/registe/social`;
     try {
         yield put({
             type: PUT_REGISTER_SOCIAL_INIT,
