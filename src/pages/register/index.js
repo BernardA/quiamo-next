@@ -212,7 +212,7 @@ class RegisterHome extends React.Component {
         if (dataRegister) {
             setTimeout(() => { router.push('/'); }, 2000);
         } else if (dataGoogle) {
-            setTimeout(() => { router.push('/registe/social'); }, 2000);
+            setTimeout(() => { router.push('/register/social'); }, 2000);
         }
     };
 

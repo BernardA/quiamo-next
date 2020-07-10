@@ -22,7 +22,7 @@ import {
     LOCALE,
     CURRENCY,
 } from '../parameters';
-import Link from '../components/link';
+import Link from './link';
 
 const styles = () => ({
     content: {
@@ -75,7 +75,11 @@ const styles = () => ({
 
 const AdDetails = (props) => {
     const {
-        ad, userProfile, isAction, classes,
+        ad, 
+        userProfile, 
+        isAction, 
+        classes,
+        location,
     } = props;
     // if user has no img on profile, get placeholder img
     let imgPath = `${process.env.API_HOST}${AVATAR_PLACEHOLDER_PATH}`;
@@ -170,16 +174,22 @@ const AdDetails = (props) => {
                 {isAction ? (
                     <CardActions>
                         {!userProfile || !isAlreadyBid() ? (
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                component={Link}
-                                to={`/bid/${ad._id}`}
-                                state={{ adViewPath: location.pathname }}
+                            <Link
+                                href={{
+                                    pathname: `/bid/${ad._id}`,
+                                    query: {
+                                        adViewPath: location.pathname
+                                    }
+                                }}
                             >
-                                Make offer
-                            </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    fullWidth
+                                >
+                                    Make offer
+                                </Button>
+                            </Link>
                         ) : (
                             <NotifierInline isNotClosable message="You already bid for this ad, thanks!" />
                         )}
@@ -196,6 +206,7 @@ AdDetails.propTypes = {
     userProfile: PropTypes.any,
     isAction: PropTypes.bool.isRequired,
     classes: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(AdDetails);

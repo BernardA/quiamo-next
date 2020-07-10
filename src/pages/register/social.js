@@ -113,11 +113,8 @@ class RegisterSocial extends React.Component {
 
     handlePutSocialOk = () => {
         const {
-            location,
             router,
         } = this.props;
-        const redir = location.state.finalRoute || 'homepage';
-        const from = location.state.finalRoute || '/';
         localforage.getItem('pendingAdId').then((value) => {
             let isPendingAd = false;
             if (value !== null) {
@@ -138,7 +135,7 @@ class RegisterSocial extends React.Component {
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
                             {isPendingAd ? 'Your ad was published. ' : null}
-                            {`You will be redirected to ${redir}`}
+                            {`You will be redirected to homepage`}
                         </Typography>
                     </>
                 );
@@ -153,7 +150,7 @@ class RegisterSocial extends React.Component {
                 },
             });
             setTimeout(() => {
-                router.push(from);
+                router.push('/');
             }, 3000);
         });
     }
@@ -272,7 +269,6 @@ RegisterSocial.propTypes = {
     actionPostAddress: PropTypes.func.isRequired,
     actionPutRegisterSocial: PropTypes.func.isRequired,
     actionPutUserToAd: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
     isOnline: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     dataAddress: PropTypes.any,

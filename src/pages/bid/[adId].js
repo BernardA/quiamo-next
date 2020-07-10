@@ -127,7 +127,7 @@ class BidHome extends React.Component {
         const { ad } = this.state;
         const {
             isLoading,
-            location,
+            router,
         } = this.props;
         const { userProfile } = this.state;
         return (
@@ -140,7 +140,7 @@ class BidHome extends React.Component {
                             <BidForm
                                 ad={ad}
                                 userProfile={userProfile}
-                                location={location}
+                                location={router}
                             />
                         </>
                     ) : null}
@@ -164,7 +164,6 @@ BidHome.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     dataGetAd: PropTypes.any,
     errorReq: PropTypes.any,
-    location: PropTypes.object.isRequired,
     userProfile: PropTypes.any,
     router: PropTypes.object.isRequired,
 };

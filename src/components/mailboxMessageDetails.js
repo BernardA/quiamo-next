@@ -97,11 +97,13 @@ class MessageDetails extends React.Component {
                         <TableRow key={attachment.filename} id="attach_dialog">
                             <TableCell>
                                 <Link
-                                    to="/viewer/message"
-                                    state={{
-                                        fileName: attachment.filename,
-                                        mailbox: routeParams.type,
-                                        messageId: message._id,
+                                    href={{
+                                        pathname: '/viewer/message',
+                                        query: {
+                                            fileName: attachment.filename,
+                                            mailbox: routeParams.type,
+                                            messageId: message._id,  
+                                        }
                                     }}
                                 >
                                     {attachment.filename}

@@ -50,7 +50,7 @@ class Adview extends React.Component {
     };
 
     render() {
-        const { isLoadingAd, userProfile } = this.props;
+        const { isLoadingAd, userProfile, router } = this.props;
         return (
             <main>
                 {isLoadingAd ? <Loading /> : null}
@@ -64,7 +64,7 @@ class Adview extends React.Component {
                         {this.state.ad ? (
                             <AdDetails
                                 ad={this.state.ad}
-                                location={location}
+                                location={router}
                                 userProfile={userProfile}
                                 isAction
                             />
@@ -85,6 +85,7 @@ Adview.propTypes = {
     actionGetAd: PropTypes.func.isRequired,
     dataGetAd: PropTypes.any,
     userProfile: PropTypes.any,
+    router: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

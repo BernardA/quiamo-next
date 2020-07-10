@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import AttachFileOutlinedIcon from '@material-ui/icons/AttachFileOutlined';
-import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import NotifierDialog from './notifierDialog';
@@ -256,7 +255,7 @@ class BidInsertForm extends React.Component {
             errors[0].bidder === 'You have already bid for this ad'
         ) {
             // TODO fix state does not work with next
-            this.props.router.push(this.props.location.state.adViewPath);
+            this.props.location.push(this.props.location.query.adViewPath);
         }
     }
 
@@ -491,7 +490,6 @@ BidInsertForm.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     isLoadingMailbox: PropTypes.bool.isRequired,
     bidType: PropTypes.string,
-    router: PropTypes.object.isRequired,
 };
 
 /*
@@ -544,4 +542,4 @@ export default connect(
     },
 )(reduxForm({
     form: 'BidInsertForm',
-})(withRouter(BidInsertForm)));
+})(BidInsertForm));

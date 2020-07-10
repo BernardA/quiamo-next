@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Carousel from 'react-images';
 import PDFViewer from 'pdf-viewer-reactjs';
 import { Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router'
+// import PropTypes from 'prop-types';
 import {
     MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES,
     MESSAGE_ATTACHMENT_DIRECTORY,
@@ -15,11 +16,11 @@ import Link from '../../components/link';
 import getCategories from '../../lib/getCategories';
 import { handlePrivateRoute } from '../../tools/functions';
 
-const Viewer = (props) => {
+const Viewer = () => {
+    const router = useRouter();
+    const { query: {fileName, mailbox, messageId }} = router;
     const [message, setMessage] = useState(null);
     useEffect(() => {
-        const { location } = props;
-        const fileName = location.state.fileName;
         const fileType = fileName.split('.').pop();
         const isAccepted = MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES.filter(
             (type) => {
@@ -30,8 +31,6 @@ const Viewer = (props) => {
             setMessage('The file type is invalid.');
         }
     });
-    const { location: { state } } = props;
-    const fileName = state.fileName;
     const source = `${process.env.API_HOST}${MESSAGE_ATTACHMENT_DIRECTORY}${fileName}`;
     const images = [{ source }];
     const customCarouselStyles = {
@@ -48,11 +47,11 @@ const Viewer = (props) => {
                 links={[
                     { href: '/mailbox/inbox/0', text: 'mailbox' },
                     {
-                        href: `/mailbox/${state.mailbox}/0`,
-                        text: state.mailbox,
+                        href: `/mailbox/${mailbox}/0`,
+                        text: mailbox,
                     },
                     {
-                        href: `/mailbox/${state.mailbox}/${state.messageId}`,
+                        href: `/mailbox/${mailbox}/${messageId}`,
                         text: 'message',
                     },
                 ]}
@@ -60,7 +59,7 @@ const Viewer = (props) => {
             <div className={styles.viewer}>
                 <Link
                     className={styles.link}
-                    to={`/mailbox/${state.mailbox}/${state.messageId}`}
+                    to={`/mailbox/${mailbox}/${messageId}`}
                     aria-label="back to message"
                 >
                     <Button
@@ -102,10 +101,8 @@ const Viewer = (props) => {
     );
 };
 
-Viewer.propTypes = {
-    location: PropTypes.object.isRequired,
-    fileName: PropTypes.any,
-};
+// Viewer.propTypes = {
+// };
 
 export default Viewer;
 

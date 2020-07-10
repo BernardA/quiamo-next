@@ -3,7 +3,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { withRouter } from 'next/router';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -66,7 +65,7 @@ class MessageForm extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { dataAttachments, dataMessage, userProfile, router } = this.props;
+        const { dataAttachments, dataMessage, userProfile, location } = this.props;
         if ((!prevProps.dataAttachments && dataAttachments) ||
             prevProps.dataAttachments !== dataAttachments) {
             // post attachment success -> post message
@@ -91,7 +90,7 @@ class MessageForm extends React.Component {
                     errors: {},
                 },
             });
-            setTimeout(() => router.push('/mailbox/inbox/0'), 3000);
+            setTimeout(() => location.push('/mailbox/inbox/0'), 3000);
         }
 
         if (!prevProps.errorPostMessage && this.props.errorPostMessage) {
@@ -260,7 +259,7 @@ class MessageForm extends React.Component {
     };
 
     handleDiscardDraft = () => {
-        const { reset, router } = this.props;
+        const { reset, location } = this.props;
         this.setState({
             // activeNewMessage: false,
             // activeReply: false,
@@ -271,7 +270,7 @@ class MessageForm extends React.Component {
             document.getElementById(`file${i}`).parentElement.style.display = 'none';
         }
         reset();
-        router.push('/mailbox/inbox/0');
+        location.push('/mailbox/inbox/0');
     };
 
     handleNotificationDismiss = () => {
@@ -290,7 +289,7 @@ class MessageForm extends React.Component {
         // if message to ad is enabled, which is not the case
         // TODO fix state location
         if (isRedirectBackToAdView) {
-            this.props.router.push(this.props.location.state.adViewPath);
+            this.props.location.push(this.props.location.query.adViewPath);
         }
     }
 
@@ -507,7 +506,6 @@ MessageForm.propTypes = {
     dataMessage: PropTypes.any,
     mailbox: PropTypes.any,
     location: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -533,4 +531,4 @@ export default connect(
     mapDispatchToProps,
 )(reduxForm({
     form: 'MessageForm',
-})(withRouter(MessageForm)));
+})(MessageForm));

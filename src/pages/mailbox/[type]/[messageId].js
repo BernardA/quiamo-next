@@ -73,7 +73,7 @@ class MailboxHome extends React.Component {
             errorBlockUser,
             router,
         } = this.props;
-        if (prevProps.location.pathname !== this.props.location.pathname) {
+        if (prevProps.router.pathname !== router.pathname) {
             this.setState({
                 isActiveNewMessage: false,
                 messageContent: null,
@@ -460,6 +460,7 @@ class MailboxHome extends React.Component {
             isLoading,
             isLoadingAuth,
             isLoadingBlockUser,
+            router,
         } = this.props;
         return (
             <>
@@ -485,7 +486,7 @@ class MailboxHome extends React.Component {
                                             <MessageForm
                                                 userProfile={userProfile}
                                                 routeParams={routeParams}
-                                                location={location}
+                                                location={router}
                                                 mailbox={mailbox}
                                             />
                                         )
@@ -500,7 +501,7 @@ class MailboxHome extends React.Component {
                                                 handleMessageStatusUpdate={
                                                     this.handleMessageStatusUpdate
                                                 }
-                                                location={location}
+                                                location={router}
                                                 handleMessageReportNotification={
                                                     this.handleMessageReportNotification
                                                 }
@@ -539,7 +540,6 @@ MailboxHome.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
     type: PropTypes.string.isRequired,
     messageId: PropTypes.string.isRequired,
-    location: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isLoadingBlockUser: PropTypes.bool.isRequired,
     isLoadingAuth: PropTypes.bool.isRequired,
