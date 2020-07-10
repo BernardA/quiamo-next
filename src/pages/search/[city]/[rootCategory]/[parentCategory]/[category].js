@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
@@ -149,7 +148,7 @@ class SearchCat extends React.Component {
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <SearchAdsForm
-                            location={router}
+                            router={router}
                             categories={categories}
                             addresses={cities}
                         />
@@ -238,7 +237,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(SearchCat));
+)(SearchCat);
 
 const queryQl = `
            query SearchTemplateData(

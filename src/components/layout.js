@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import Header from './header';
 import Footer from './footer';
@@ -7,18 +6,17 @@ import SessionHander from './sessionHandler';
 import styles from '../styles/layout.module.scss';
 
 
-const Layout = ({ children, categories, isFallback }) => {
-    const router = useRouter();
+const Layout = ({ children, categories, router }) => {
     return (
         <div className={styles.container}>
             <div>
                 <Header
                     siteTitle="quiamo"
-                    location={router}
+                    router={router}
                     categories={categories}
-                    isFallback={isFallback}
+                    isFallback={router.isFallback}
                 />
-                <SessionHander location={router} />
+                <SessionHander router={router} />
                 <>{children}</>
             </div>
             <Footer />
@@ -30,7 +28,7 @@ const Layout = ({ children, categories, isFallback }) => {
 Layout.propTypes = {
     children: PropTypes.node.isRequired,
     categories: PropTypes.array.isRequired,
-    isFallback: PropTypes.bool.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 export default Layout;

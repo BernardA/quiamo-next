@@ -54,8 +54,8 @@ const styles = (theme) => ({
 });
 
 const userViewer = (props) => {
-    const { classes, userProfile, handleUnblockUser, location } = props;
-    const isAdmin = location.pathname.includes('admin');
+    const { classes, userProfile, handleUnblockUser, router } = props;
+    const isAdmin = router.pathname.includes('admin');
     return (
         <>
             <Grid item xs={12}>
@@ -139,7 +139,7 @@ const userViewer = (props) => {
                                         {showtime(userProfile.createdAt)}
                                     </TableCell>
                                 </TableRow>
-                                {location.pathname.includes('admin') ? (
+                                {router.pathname.includes('admin') ? (
                                     <>
                                         <TableRow>
                                             <TableCell
@@ -182,7 +182,7 @@ userViewer.propTypes = {
     userProfile: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     handleUnblockUser: PropTypes.func,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(userViewer);

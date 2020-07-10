@@ -80,7 +80,7 @@ class MessageDetails extends React.Component {
 
     render() {
         const {
-            location,
+            router,
             messageContent,
             handleMessageStatusUpdate,
             handleMessageReportNotification,
@@ -310,7 +310,7 @@ class MessageDetails extends React.Component {
                             routeParams={routeParams}
                             originalMessage={messageContent}
                             userProfile={userProfile}
-                            location={location}
+                            router={router}
                         />
                     ) : null}
                 </div>
@@ -330,7 +330,7 @@ class MessageDetails extends React.Component {
 
 MessageDetails.propTypes = {
     messageContent: PropTypes.object,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     handleMessageStatusUpdate: PropTypes.func.isRequired,
     handleMessageReportNotification: PropTypes.func.isRequired,
     handleUserBlockNotification: PropTypes.func.isRequired,

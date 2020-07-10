@@ -10,12 +10,12 @@ import usePrevious from '../tools/hooks/usePrevious';
 import { ROOT_CATEGORIES } from '../parameters';
 
 const Nav = (props) => {
-    const { cookies, categories, isFallback, location } = props;
+    const { cookies, categories, isFallback, router } = props;
     const [isOpenProductsMenu, setIsOpenProductsMenu] = useState(false);
     const [isOpenServicesMenu, setIsOpenServicesMenu] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [locationPathname, setLocationPathname] = useState(location.pathname);
-    const prevLocationPathname = usePrevious(locationPathname);
+    const [routerPathname, setRouterPathname] = useState(router.pathname);
+    const prevRouterPathname = usePrevious(routerPathname);
     const main = ROOT_CATEGORIES.split(',');
     useEffect(() => {
         if (cookies.get('roles')) {
@@ -23,8 +23,8 @@ const Nav = (props) => {
             setIsAdmin(!!roles.includes('ROLE_ADMIN') || roles.includes('ROLE_SUPERADMIN'));
         }
         const handleLocationChange = () => {
-            if (prevLocationPathname !== location.pathname) {
-                setLocationPathname(location.pathname);
+            if (prevRouterPathname !== router.pathname) {
+                setRouterPathname(router.pathname);
                 setIsOpenProductsMenu(false);
                 setIsOpenServicesMenu(false);
             }
@@ -33,7 +33,7 @@ const Nav = (props) => {
         return () => {
             handleLocationChange();
         };
-    }, [location]);
+    }, [router]);
 
     return (
         <MenuList className={styles.navGrid} style={{ padding: '0 10px 0 0' }}>
@@ -98,7 +98,7 @@ const Nav = (props) => {
 Nav.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
     categories: PropTypes.array.isRequired,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     isFallback: PropTypes.bool.isRequired,
 };
 

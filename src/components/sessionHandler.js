@@ -25,7 +25,7 @@ import {
 // localforage.setItem('loggedInAt', Now());
 // localforage.setItem('lastActiveAt', Now());
 // user is active when:
-// - navigating to another location.pathname
+// - navigating to another router.pathname
 // - making a request to the server
 // navigation updates indexeddb on componentDidUpdate below
 // server requests updates indexeddb on sagas.js
@@ -88,7 +88,7 @@ class SessionHandler extends React.Component {
     componentDidUpdate(prevProps) {
         const prevToken = prevProps.token || null;
         const {
-            location,
+            router,
             isTokenExpired,
             errorRefreshToken,
             isLogoutInit,
@@ -98,7 +98,7 @@ class SessionHandler extends React.Component {
             refreshToken,
         } = this.props;
         // set lastActiveAt when navigating in the app
-        if (token && prevProps.location.pathname !== location.pathname) {
+        if (token && prevProps.router.pathname !== router.pathname) {
             localforage.setItem('lastActiveAt', Now());
         }
         // has logged in: set active and handleSession timeout
@@ -349,7 +349,7 @@ class SessionHandler extends React.Component {
 
 SessionHandler.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     actionRefreshToken: PropTypes.func.isRequired,
     actionGetUserProfile: PropTypes.func.isRequired,
     actionGetMailbox: PropTypes.func.isRequired,

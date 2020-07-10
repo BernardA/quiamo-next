@@ -1,4 +1,3 @@
-import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Card,
@@ -79,7 +78,7 @@ const AdDetails = (props) => {
         userProfile, 
         isAction, 
         classes,
-        location,
+        router,
     } = props;
     // if user has no img on profile, get placeholder img
     let imgPath = `${process.env.API_HOST}${AVATAR_PLACEHOLDER_PATH}`;
@@ -178,7 +177,7 @@ const AdDetails = (props) => {
                                 href={{
                                     pathname: `/bid/${ad._id}`,
                                     query: {
-                                        adViewPath: location.pathname
+                                        adViewPath: router.pathname
                                     }
                                 }}
                             >
@@ -206,7 +205,7 @@ AdDetails.propTypes = {
     userProfile: PropTypes.any,
     isAction: PropTypes.bool.isRequired,
     classes: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(AdDetails);

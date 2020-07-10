@@ -3,7 +3,6 @@ import React from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Router from 'next/router';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
 import Popper from '@material-ui/core/Popper';
@@ -75,6 +74,7 @@ class SearchAdsForm extends React.Component {
         const {
             categories,
             searchAdsForm: { values },
+            router,
         } = this.props;
         const subcat = categories.filter((cat) => {
             return (
@@ -88,7 +88,7 @@ class SearchAdsForm extends React.Component {
         const cat = urlWriter(subcat[0].parent.title);
         const subcategory = urlWriter(values.subcategory);
         const place = urlWriter(values.place);
-        Router.push(`/search/${place}/${type}/${cat}/${subcategory}`);
+        router.push(`/search/${place}/${type}/${cat}/${subcategory}`);
     };
 
     handleTypeAheadPlaces = (event) => {
@@ -152,8 +152,8 @@ class SearchAdsForm extends React.Component {
     };
 
     resetOrReturn = () => {
-        if (this.props.location.pathname !== '/search/0/0/0/0') {
-            Router.push('/search/0/0/0/0');
+        if (this.props.router.pathname !== '/search/0/0/0/0') {
+            this.props.router.push('/search/0/0/0/0');
         }
         // document.getElementById('no_cat_search').innerHTML = '';
         // this.setState({ isNullPlaceSearchResult: true });
@@ -176,7 +176,7 @@ class SearchAdsForm extends React.Component {
             invalid,
             submitting,
             error,
-            location,
+            router,
             pristine,
         } = this.props;
         const {
@@ -189,7 +189,7 @@ class SearchAdsForm extends React.Component {
             return <div>{error.messageKey}</div>;
         }
         const isDisabled = () => {
-            if (location.pathname === '/search/0/0/0/0') {
+            if (router.pathname === '/search/0/0/0/0') {
                 if (submitting || pristine) {
                     return true;
                 }
@@ -326,7 +326,7 @@ SearchAdsForm.propTypes = {
     error: PropTypes.object,
     change: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     categories: PropTypes.any,
     classes: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,

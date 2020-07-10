@@ -4,7 +4,6 @@ import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
-import { withRouter } from 'next/router';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -53,7 +52,7 @@ class AdEdit extends React.Component {
             dataToggleActiveAd,
             cookies,
             errorReq,
-            location: { pathname },
+            router,
         } = this.props;
         if (!prevProps.dataGetAd && dataGetAd) {
             this.setState({
@@ -61,7 +60,7 @@ class AdEdit extends React.Component {
             });
         }
         if (!prevProps.dataPutAd && dataPutAd) {
-            if (pathname.includes('my-ads')) {
+            if (router.pathname.includes('my-ads')) {
                 this.props.actionGetUserProfile(cookies.get('userId'));
             }
             // update localforage ads
@@ -79,7 +78,7 @@ class AdEdit extends React.Component {
             });
         }
         if (!prevProps.dataDeleteAd && dataDeleteAd) {
-            if (pathname.includes('my-ads')) {
+            if (router.pathname.includes('my-ads')) {
                 this.props.actionGetUserProfile(cookies.get('userId'));
             }
             this.setState({
@@ -101,7 +100,7 @@ class AdEdit extends React.Component {
             });
         }
         if (!prevProps.dataToggleActiveAd && dataToggleActiveAd) {
-            if (pathname.includes('my-ads')) {
+            if (router.pathname.includes('my-ads')) {
                 this.props.actionGetUserProfile(cookies.get('userId'));
             }
             // update localforage
@@ -171,7 +170,7 @@ class AdEdit extends React.Component {
 
     handleNotificationDismiss = (event) => {
         const { title, message } = this.state.notification;
-        const { location: { pathname }, router } = this.props;
+        const { router } = this.props;
         this.setState({
             notification: {
                 status: '',
@@ -180,9 +179,9 @@ class AdEdit extends React.Component {
                 errors: {},
             },
         });
-        if (title === 'Success' && pathname.includes('my-ads')) {
+        if (title === 'Success' && router.pathname.includes('my-ads')) {
             router.push('/my-ads');
-        } else if (title === 'Success' && pathname.includes('admin')) {
+        } else if (title === 'Success' && router.pathname.includes('admin')) {
             router.push('/admin/ads');
         } else if (title.includes('Confirmation') && event.target.id === 'confirmed') {
             if (message.includes('delete')) {
@@ -195,13 +194,13 @@ class AdEdit extends React.Component {
 
     render() {
         const {
-            isLoadingAd, isLoading, adIdRoute, location: { pathname },
+            isLoadingAd, isLoading, adIdRoute, router,
         } = this.props;
         const { ad } = this.state;
         return (
             <main>
                 {isLoading || isLoadingAd || !ad ? <Loading /> : null}
-                {pathname.includes('admin') ?
+                {router.pathname.includes('admin') ?
                     (
                         <Breadcrumb links={[
                             { href: '/admin', text: 'admin' },
@@ -239,7 +238,7 @@ class AdEdit extends React.Component {
                                     Delete
                                 </Button>
                             </FormGroup>
-                            {pathname.includes('my-ads') ?
+                            {router.pathname.includes('my-ads') ?
                                 (
                                     <ExpansionPanel>
                                         <ExpansionPanelSummary
@@ -280,7 +279,6 @@ AdEdit.propTypes = {
     dataDeleteAd: PropTypes.any,
     dataToggleActiveAd: PropTypes.any,
     errorReq: PropTypes.any,
-    location: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
 };
 
@@ -305,7 +303,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(AdEdit)));
+)(AdEdit));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

@@ -64,7 +64,7 @@ class Adview extends React.Component {
                         {this.state.ad ? (
                             <AdDetails
                                 ad={this.state.ad}
-                                location={router}
+                                router={router}
                                 userProfile={userProfile}
                                 isAction
                             />

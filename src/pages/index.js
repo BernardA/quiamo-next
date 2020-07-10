@@ -76,6 +76,7 @@ const Home = (props) => {
         classes,
     } = props;
     // React.useEffect(() => localforage.setItem('categories', categories), []);
+    console.log('home props', props);
     return (
         <div className="container">
             <Head>

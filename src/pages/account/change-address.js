@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Geocode from 'react-geocode';
-import { withRouter } from 'next/router';
 import {
     Card,
     CardHeader,
@@ -177,7 +176,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(AccountAddressChange)));
+)(AccountAddressChange));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

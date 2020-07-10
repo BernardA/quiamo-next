@@ -204,7 +204,7 @@ class Account extends React.Component {
     };
 
     render() {
-        const { classes, isLoading, isLoadingProfile } = this.props;
+        const { classes, isLoading, isLoadingProfile, router } = this.props;
         const { userProfile } = this.state;
 
         // if (!isPermitted) {
@@ -220,7 +220,7 @@ class Account extends React.Component {
                             <UserViewer
                                 userProfile={userProfile}
                                 handleUnblockUser={this.handleUnblockUser}
-                                location={location}
+                                router={router}
                             />
                             <Grid item xs={12} sm={6}>
                                 <Paper className={classes.paper}>
@@ -370,7 +370,7 @@ Account.propTypes = {
     errorToggleUserStatus: PropTypes.any,
     dataToggleUserStatus: PropTypes.any,
     userProfile: PropTypes.any,
-    // router: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

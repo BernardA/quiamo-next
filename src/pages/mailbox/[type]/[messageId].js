@@ -1,6 +1,4 @@
-import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'next/router';
 import { bindActionCreators } from 'redux';
 import localforage from 'localforage';
 import { withCookies, Cookies } from 'react-cookie';
@@ -486,7 +484,7 @@ class MailboxHome extends React.Component {
                                             <MessageForm
                                                 userProfile={userProfile}
                                                 routeParams={routeParams}
-                                                location={router}
+                                                router={router}
                                                 mailbox={mailbox}
                                             />
                                         )
@@ -501,7 +499,7 @@ class MailboxHome extends React.Component {
                                                 handleMessageStatusUpdate={
                                                     this.handleMessageStatusUpdate
                                                 }
-                                                location={router}
+                                                router={router}
                                                 handleMessageReportNotification={
                                                     this.handleMessageReportNotification
                                                 }
@@ -581,7 +579,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(MailboxHome)));
+)(MailboxHome));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

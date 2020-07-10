@@ -23,7 +23,7 @@ class ConfirmUser extends React.Component {
     }
 
     componentDidMount() {
-        const token = this.props.location.pathname.replace('/confirm-user/', '');
+        const token = this.props.router.pathname.replace('/confirm-user/', '');
         if (token) {
             this.setState({ confirmationToken: token });
             this.props.actionPostUserConfirm(token);
@@ -85,13 +85,12 @@ class ConfirmUser extends React.Component {
     }
 }
 
-ConfirmUser.propTypes = {
-    location: PropTypes.object.isRequired,
+ConfirmUser.propTypes = {   
+    router: PropTypes.object.isRequired,
     actionPostUserConfirm: PropTypes.func.isRequired,
     dataConfirmation: PropTypes.any,
     errorConfirmation: PropTypes.any,
     isLoading: PropTypes.bool.isRequired,
-    router: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

@@ -16,7 +16,7 @@ import LoggedMenu from './statusLoggedMenu';
 
 class Status extends React.Component {
     render() {
-        const { cookies, location } = this.props;
+        const { cookies, router } = this.props;
         const username = cookies.get('username') || false;
         return (
             <div className={styles.status}>
@@ -32,7 +32,7 @@ class Status extends React.Component {
                         ) : null
                 }
                 {
-                    !username && !location.pathname.includes('login') ?
+                    !username && !router.pathname.includes('login') ?
                         (
                             <div className={styles.signer}>
                                 <Link
@@ -54,7 +54,7 @@ class Status extends React.Component {
 Status.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
     actionLogoutInit: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withCookies, Cookies } from 'react-cookie';
-import { withRouter } from 'next/router';
 import localforage from 'localforage';
 import PropTypes from 'prop-types';
 import BidForm from '../../components/bidInsertForm';
@@ -140,7 +139,7 @@ class BidHome extends React.Component {
                             <BidForm
                                 ad={ad}
                                 userProfile={userProfile}
-                                location={router}
+                                router={router}
                             />
                         </>
                     ) : null}
@@ -190,7 +189,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(BidHome)));
+)(BidHome));
 
 export async function getServerSideProps() {
     let categories = await getCategories();

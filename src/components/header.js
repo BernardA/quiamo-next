@@ -60,21 +60,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-    const { location, categories, isFallback } = props;
-    const [locationPathname, setLocationPathname] = useState(location.pathname);
+    const { router, categories, isFallback } = props;
+    const [routerPathname, setRouterPathname] = useState(router.pathname);
     const [isRgpd, setIsRgpd] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const prevLocationPathname = usePrevious(locationPathname);
+    const prevRouterPathname = usePrevious(routerPathname);
 
     // this.getGeo(); //DISABLED TO AVOID CHARGES/KEEP PARIS AS DEFAULT
     useEffect(() => {
         const handleRGPD = () => {
-            if (prevLocationPathname !== location.pathname) {
+            if (prevRouterPathname !== router.pathname) {
                 const isRgpdRoute = ['/', '/search'];
                 localforage.getItem('isRgpd').then((value) => {
                     if (!value) {
                         // if no value in indexeddb proceed to check the route
-                        setIsRgpd(!!isRgpdRoute.includes(location.pathname));
+                        setIsRgpd(!!isRgpdRoute.includes(router.pathname));
                     } else {
                         // if isRgpd is set on indexeddb, do not show dialog
                         setIsRgpd(false);
@@ -83,9 +83,9 @@ export default function Header(props) {
             }
         };
         const handleLocationChange = () => {
-            if (prevLocationPathname !== location.pathname) {
+            if (prevRouterPathname !== router.pathname) {
                 // close mobile navigation
-                setLocationPathname(location.pathname);
+                setRouterPathname(router.pathname);
                 setIsMobileMenuOpen(false);
             }
         };
@@ -97,7 +97,7 @@ export default function Header(props) {
             handleRGPD();
             handleLocationChange();
         };
-    }, [isRgpd, location]);
+    }, [isRgpd, router]);
 
     const handleCloseRgpdDialog = () => {
         setIsRgpd(false);
@@ -133,20 +133,20 @@ export default function Header(props) {
                                 className={classes.menuIcon}
                             />
                         ) : null}
-                        <Status location={location} />
+                        <Status router={router} />
                     </div>
                 </div>
                 {isBrowser ? (
                     <Nav 
                         categories={categories} 
-                        location={location} 
+                        router={router} 
                         isFallback={isFallback}
                     />
                 ) : null}
                 {isMobileMenuOpen && isMobile ? (
                     <NavMobile 
                         categories={categories} 
-                        location={location} 
+                        router={router} 
                         isFallback={isFallback}
                     />
                 ) : null}
@@ -156,7 +156,7 @@ export default function Header(props) {
 }
 
 Header.propTypes = {
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     categories: PropTypes.array.isRequired,
     isFallback: PropTypes.bool.isRequired,
 };

@@ -1,5 +1,4 @@
 /* eslint-disable react/no-access-state-in-setstate */
-import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -65,7 +64,7 @@ class MessageForm extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { dataAttachments, dataMessage, userProfile, location } = this.props;
+        const { dataAttachments, dataMessage, userProfile, router } = this.props;
         if ((!prevProps.dataAttachments && dataAttachments) ||
             prevProps.dataAttachments !== dataAttachments) {
             // post attachment success -> post message
@@ -90,7 +89,7 @@ class MessageForm extends React.Component {
                     errors: {},
                 },
             });
-            setTimeout(() => location.push('/mailbox/inbox/0'), 3000);
+            setTimeout(() => router.push('/mailbox/inbox/0'), 3000);
         }
 
         if (!prevProps.errorPostMessage && this.props.errorPostMessage) {
@@ -259,7 +258,7 @@ class MessageForm extends React.Component {
     };
 
     handleDiscardDraft = () => {
-        const { reset, location } = this.props;
+        const { reset, router } = this.props;
         this.setState({
             // activeNewMessage: false,
             // activeReply: false,
@@ -270,7 +269,7 @@ class MessageForm extends React.Component {
             document.getElementById(`file${i}`).parentElement.style.display = 'none';
         }
         reset();
-        location.push('/mailbox/inbox/0');
+        router.push('/mailbox/inbox/0');
     };
 
     handleNotificationDismiss = () => {
@@ -287,9 +286,8 @@ class MessageForm extends React.Component {
             },
         });
         // if message to ad is enabled, which is not the case
-        // TODO fix state location
         if (isRedirectBackToAdView) {
-            this.props.location.push(this.props.location.query.adViewPath);
+            this.props.router.push(this.props.router.query.adViewPath);
         }
     }
 
@@ -505,7 +503,7 @@ MessageForm.propTypes = {
     dataAttachments: PropTypes.any,
     dataMessage: PropTypes.any,
     mailbox: PropTypes.any,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

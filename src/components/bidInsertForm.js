@@ -255,7 +255,7 @@ class BidInsertForm extends React.Component {
             errors[0].bidder === 'You have already bid for this ad'
         ) {
             // TODO fix state does not work with next
-            this.props.location.push(this.props.location.query.adViewPath);
+            this.props.router.push(this.props.router.query.adViewPath);
         }
     }
 
@@ -486,7 +486,7 @@ BidInsertForm.propTypes = {
     userProfile: PropTypes.object.isRequired,
     ad: PropTypes.object.isRequired,
     bidForm: PropTypes.any,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isLoadingMailbox: PropTypes.bool.isRequired,
     bidType: PropTypes.string,

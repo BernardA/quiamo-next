@@ -50,9 +50,9 @@ class MyAdsBids extends React.Component {
     }
 
     render() {
-        const { isLoadingAd, isLoading, location } = this.props;
+        const { isLoadingAd, isLoading, router } = this.props;
         const { ad } = this.state;
-        const isMyAds = location.pathname.includes('my-ads');
+        const isMyAds = router.pathname.includes('my-ads');
         const parentLocation = isMyAds ? 'my-ads' : 'my-bids';
         return (
             <main>
@@ -79,7 +79,7 @@ MyAdsBids.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     adIdRoute: PropTypes.string.isRequired,
     dataGetAd: PropTypes.any,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

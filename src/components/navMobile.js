@@ -14,12 +14,12 @@ import usePrevious from '../tools/hooks/usePrevious';
 import { ROOT_CATEGORIES } from '../parameters';
 
 const NavMobile = (props) => {
-    const { cookies, categories, location } = props;
+    const { cookies, categories, router } = props;
     const [isOpenCategoryMenu, setIsOpenCategoryMenu] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [currentType, setCurrentType] = useState(null);
-    const [locationPathname, setLocationPathname] = useState(location.pathname);
-    const prevLocationPathname = usePrevious(locationPathname);
+    const [routerPathname, setRouterPathname] = useState(router.pathname);
+    const prevRouterPathname = usePrevious(routerPathname);
     const main = ROOT_CATEGORIES.split(',');
 
     useEffect(() => {
@@ -28,11 +28,11 @@ const NavMobile = (props) => {
             setIsAdmin(!!roles.includes('ROLE_ADMIN') || roles.includes('ROLE_SUPERADMIN'));
         }
         const handleLocationChange = () => {
-            if (prevLocationPathname !== location.pathname) {
-                setLocationPathname(location.pathname);
+            if (prevRouterPathname !== router.pathname) {
+                setRouterPathname(router.pathname);
                 const listItems = document.querySelectorAll('.activable');
                 listItems.forEach((item) => {
-                    if (item.id === location.pathname) {
+                    if (item.id === router.pathname) {
                         item.classList.add(`${styles.activeList}`);
                     } else {
                         item.classList.remove(`${styles.activeList}`);
@@ -44,7 +44,7 @@ const NavMobile = (props) => {
         return () => {
             handleLocationChange();
         };
-    }, [location]);
+    }, [router]);
     const toggleCategoryMenu = (isOpen, type = null) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -106,7 +106,7 @@ const NavMobile = (props) => {
 NavMobile.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
     categories: PropTypes.array.isRequired,
-    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 export default withCookies(NavMobile);

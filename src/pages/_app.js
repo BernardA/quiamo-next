@@ -44,7 +44,8 @@ import Layout from '../components/layout';
 
 function MyApp(props) {
     console.log('MY APP PROPS', props);
-    const { Component, pageProps } = props;
+    const { Component, pageProps, router } = props;
+    pageProps.router = router;
     React.useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector('#jss-server-side');
@@ -66,7 +67,7 @@ function MyApp(props) {
                 <CssBaseline />
                 <Layout 
                     categories={pageProps.categories || []} 
-                    isFallback={props.router.isFallback}
+                    router={router}
                 >
                     <Component {...pageProps} />
                 </Layout>

@@ -1,4 +1,3 @@
-import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactPaginate from 'react-paginate';
@@ -122,7 +121,7 @@ class Search extends React.Component {
                 <div className={styles.content}>
                     <div className={styles.search}>
                         <SearchAdsForm
-                            location={router}
+                            router={router}
                             categories={categories}
                             addresses={cities}
                         />
@@ -207,7 +206,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(Search));
+)(Search);
 
 const queryQl = `
            query SearchMain(

@@ -1,11 +1,11 @@
 import React from 'react';
-import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 import { Loading } from '../components/loading';
 import PasswordRecoveryRequestForm from '../components/passwordRecoveryRequestForm';
@@ -31,15 +31,15 @@ class PasswordRecovery extends React.Component {
     }
 
     componentDidMount() {
-        const { location } = this.props;
-        if (location.pathname === '/password-recovery') {
+        const { router } = this.props;
+        if (router.pathname === '/password-recovery') {
             this.setState({
                 action: 'request',
                 message: 'Please enter your email address',
             });
         } else {
             this.setState({ action: 'confirm' });
-            const token = location.pathname.replace('/password-recovery/', '');
+            const token = Router.replace('/password-recovery/');
             // check if token length === 30
             if (token.length !== 30) {
                 this.setState({
@@ -175,7 +175,6 @@ class PasswordRecovery extends React.Component {
 }
 
 PasswordRecovery.propTypes = {
-    location: PropTypes.object.isRequired,
     actionPostUserConfirm: PropTypes.func.isRequired,
     actionPostPasswordRecoveryRequest: PropTypes.func.isRequired,
     actionPostPasswordRecoveryReset: PropTypes.func.isRequired,
@@ -216,7 +215,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(PasswordRecovery));
+)(PasswordRecovery);
 
 export async function getStaticProps() {
     let categories = await getCategories();
