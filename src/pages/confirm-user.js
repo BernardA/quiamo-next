@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Card from '@material-ui/core/Card';
@@ -111,7 +110,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(ConfirmUser));
+)(ConfirmUser);
 
 export async function getServerSideProps() {
     let categories = await getCategories();

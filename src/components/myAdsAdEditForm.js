@@ -1,8 +1,6 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { withRouter } from 'next/router';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -345,4 +343,4 @@ export default connect(
     mapDispatchToProps,
 )(reduxForm({
     form: 'AdEditForm',
-})(withStyles(styles)(withRouter(AdEditForm))));
+})(withStyles(styles)(AdEditForm)));

@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Geocode from 'react-geocode';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { 
+    Card,
+    CardHeader,
+    CardContent,
+    Typography,
+} from '@material-ui/core/';
 import localforage from 'localforage';
-import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Loading } from '../../components/loading';
 import RegisterSocialForm from '../../components/registerSocialForm';
@@ -306,7 +307,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(RegisterSocial));
+)(RegisterSocial);
 
 export async function getStaticProps() {
     let categories = await getCategories();

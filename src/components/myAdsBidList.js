@@ -16,7 +16,6 @@ import {
     createMuiTheme,
     MuiThemeProvider,
 } from '@material-ui/core/styles';
-import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import NotifierInline from './notifierInline';
 import {
@@ -137,4 +136,4 @@ MyAdsBidList.propTypes = {
     router: PropTypes.object.isRequired,
 };
 
-export default withCookies(withRouter(MyAdsBidList));
+export default withCookies(MyAdsBidList);

@@ -2,7 +2,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import Link from 'next/link';
-// import { withRouter } from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
 import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';

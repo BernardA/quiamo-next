@@ -14,7 +14,6 @@ const Layout = ({ children, categories, router }) => {
                     siteTitle="quiamo"
                     router={router}
                     categories={categories}
-                    isFallback={router.isFallback}
                 />
                 <SessionHander router={router} />
                 <>{children}</>

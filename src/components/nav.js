@@ -10,7 +10,7 @@ import usePrevious from '../tools/hooks/usePrevious';
 import { ROOT_CATEGORIES } from '../parameters';
 
 const Nav = (props) => {
-    const { cookies, categories, isFallback, router } = props;
+    const { cookies, categories, router } = props;
     const [isOpenProductsMenu, setIsOpenProductsMenu] = useState(false);
     const [isOpenServicesMenu, setIsOpenServicesMenu] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -43,7 +43,7 @@ const Nav = (props) => {
             <MenuItem disableGutters>
                 <Link href="/search">Search</Link>
             </MenuItem>
-            { !isFallback ? 
+            { !router.isFallback ? 
                 (
                     <MenuItem
                         onMouseEnter={() => setIsOpenProductsMenu(true)}
@@ -64,7 +64,7 @@ const Nav = (props) => {
                         </Link>
                     </MenuItem>
                 ): null}
-            { !isFallback ?
+            { !router.isFallback ?
                 (
                     <MenuItem
                         onMouseEnter={() => setIsOpenServicesMenu(true)}
@@ -99,7 +99,6 @@ Nav.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
     categories: PropTypes.array.isRequired,
     router: PropTypes.object.isRequired,
-    isFallback: PropTypes.bool.isRequired,
 };
 
 export default withCookies(Nav);

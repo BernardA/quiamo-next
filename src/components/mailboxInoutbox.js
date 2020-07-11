@@ -1,5 +1,3 @@
-import React from 'react';
-import { withRouter } from 'next/router';
 import { AttachFileOutlined } from '@material-ui/icons';
 import MUIDataTable from 'mui-datatables';
 import classnames from 'classnames';
@@ -181,4 +179,4 @@ Inoutbox.propTypes = {
     router: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withRouter(Inoutbox));
+export default withStyles(styles)(Inoutbox);

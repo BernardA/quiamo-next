@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'next/router';
 import {
     Card,
     CardHeader,
@@ -173,7 +172,7 @@ function mapDispatchToProps(dispatch) {
 AccountProfileChange = withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(AccountProfileChange)));
+)(AccountProfileChange));
 
 export default AccountProfileChange;
 

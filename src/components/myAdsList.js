@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'next/router';
 import MUIDataTable from 'mui-datatables';
 import {
     CheckBox,
@@ -291,4 +290,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(AdList)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AdList));

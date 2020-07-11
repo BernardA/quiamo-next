@@ -60,27 +60,33 @@ const NavMobile = (props) => {
             <ListItem id="/search" className="activable">
                 <Link href="/search">Search</Link>
             </ListItem>
-            <ListItem
-                onClick={toggleCategoryMenu(true, main[0])}
-                className={styles.overrideItem}
-            >
-                <Link className={styles.disabledLink} href="/">
-                    <div>
-                        <span>{main[0]}</span>
-                        <NavigateNext fontSize="small" />
-                    </div>
-                </Link>
-            </ListItem>
-            <ListItem
-                onClick={toggleCategoryMenu(true, main[1])}
-            >
-                <Link className={styles.disabledLink} href="/">
-                    <div>
-                        <span>{main[1]}</span>
-                        <NavigateNext fontSize="small" />
-                    </div>
-                </Link>
-            </ListItem>
+            { !router.isFallback ? 
+                (
+                    <ListItem
+                        onClick={toggleCategoryMenu(true, main[0])}
+                        className={styles.overrideItem}
+                    >
+                        <Link className={styles.disabledLink} href="/">
+                            <div>
+                                <span>{main[0]}</span>
+                                <NavigateNext fontSize="small" />
+                            </div>
+                        </Link>
+                    </ListItem>
+                ): null}
+            { !router.isFallback ? 
+                (
+                    <ListItem
+                        onClick={toggleCategoryMenu(true, main[1])}
+                    >
+                        <Link className={styles.disabledLink} href="/">
+                            <div>
+                                <span>{main[1]}</span>
+                                <NavigateNext fontSize="small" />
+                            </div>
+                        </Link>
+                    </ListItem>
+                ): null}
             <Divider />
             {isAdmin ?
                 (

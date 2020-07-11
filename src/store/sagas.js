@@ -993,7 +993,7 @@ function* putRegisterSocial(action) {
         username: values.username,
         address: values.address,
     };
-    const url = `/users/${action.values.id}/registe/social`;
+    const url = `/users/${action.values.id}/register/social`;
     try {
         yield put({
             type: PUT_REGISTER_SOCIAL_INIT,
@@ -1032,7 +1032,6 @@ function* putRegisterSocial(action) {
 }
 
 function* postAd(action) {
-    console.log('action', action);
     let mutation = 'createAd';
     if (!action.values.user) {
         mutation = 'withCustomArgsMutationAd';

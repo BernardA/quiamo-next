@@ -43,7 +43,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import Layout from '../components/layout';
 
 function MyApp(props) {
-    console.log('MY APP PROPS', props);
     const { Component, pageProps, router } = props;
     pageProps.router = router;
     React.useEffect(() => {

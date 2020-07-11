@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'next/router';
 import MUIDataTable from 'mui-datatables';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import
@@ -207,4 +206,4 @@ BidList.propTypes = {
     router: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withRouter(BidList));
+export default withStyles(styles)(BidList);

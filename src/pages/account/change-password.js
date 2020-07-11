@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FormGroup from '@material-ui/core/FormGroup';
 import Button from '@material-ui/core/Button';
-import { withRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -265,7 +264,7 @@ PasswordChangeForm = reduxForm({
 PasswordChangeForm = withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withRouter(PasswordChangeForm)));
+)(PasswordChangeForm));
 
 export default PasswordChangeForm;
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';
-import { withRouter } from 'next/router';
 import { 
     Button,
     Card,
@@ -328,7 +327,7 @@ ImageUploadForm = withCookies(connect(
 
 export default reduxForm({
     form: 'ImageUploadForm',
-})(withRouter(ImageUploadForm));
+})(ImageUploadForm);
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

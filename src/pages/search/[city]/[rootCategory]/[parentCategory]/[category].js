@@ -110,7 +110,6 @@ class SearchCat extends React.Component {
     };
 
     render() {
-        console.log('SEARCH PROPS', this.props);
         const {
             categories,
             cities,
