@@ -113,13 +113,11 @@ function StatusLoggedMenu(props) {
                         <ListItemText primary="My bids" />
                     </StyledMenuItem>
                 </Link>
-                {/* }
-                    <Link href="/mailbox/inbox/0" onClick={handleClose}>
-                        <StyledMenuItem>
-                            <ListItemText primary="Mailbox" />
-                        </StyledMenuItem>
-                    </Link>
-                { */}
+                <Link href="/mailbox/[type]/[messageId]" as="/mailbox/inbox/0" onClick={handleClose}>
+                    <StyledMenuItem>
+                        <ListItemText primary="Mailbox" />
+                    </StyledMenuItem>
+                </Link>
                 <StyledMenuItem onClick={handleClose}>
                     <ListItemText
                         onClick={logoutAction}

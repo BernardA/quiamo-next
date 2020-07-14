@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';
 import PropTypes from 'prop-types';
@@ -189,7 +190,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(BidHome));
+)(withRouter(BidHome)));
 
 export async function getServerSideProps() {
     let categories = await getCategories();

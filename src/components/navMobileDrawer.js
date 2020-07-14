@@ -176,7 +176,9 @@ export default function NavDrawer(props) {
                                     className={styles.navLi}
                                 >
                                     <Link
-                                        href={`/search/france/${urlWriter(type)}/${urlWriter(currentParent)}/${urlWriter(item)}`}
+                                        href="/search/[city]/[rootCategory]/[parentCategory]/[category]"
+                                        as={`/search/france/${urlWriter(type)}/${urlWriter(currentParent)}/${urlWriter(item)}`}
+                                        
                                     >
                                         <ListItemText primary={item} />
                                     </Link>

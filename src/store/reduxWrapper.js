@@ -28,7 +28,7 @@ const configureStore = ({req = null}) => {
 }
 
 // export default configureStore;
-export default createWrapper(configureStore, { debug: true });
+export default createWrapper(configureStore, { debug: false });
 // export default wrapper;
 // https://github.com/vercel/next.js/tree/canary/examples/with-redux-saga
 // https://github.com/bmealhouse/next-redux-saga

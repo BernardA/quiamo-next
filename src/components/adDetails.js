@@ -180,6 +180,8 @@ const AdDetails = (props) => {
                                         adViewPath: router.pathname
                                     }
                                 }}
+                                as={`/bid/${ad._id}`}
+                                
                             >
                                 <Button
                                     variant="contained"

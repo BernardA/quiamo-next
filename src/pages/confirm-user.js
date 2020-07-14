@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'next/router';
+import { 
+    Card,
+    CardHeader,
+    CardContent,
+    Typography,
+} from '@material-ui/core/';
 import PropTypes from 'prop-types';
 import { actionPostUserConfirm } from '../store/actions';
 import { Loading } from '../components/loading';
@@ -110,7 +113,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ConfirmUser);
+)(withRouter(ConfirmUser));
 
 export async function getServerSideProps() {
     let categories = await getCategories();

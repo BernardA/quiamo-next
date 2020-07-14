@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import Geocode from 'react-geocode';
 import { 
     Card,
@@ -324,7 +325,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(RegisterHome);
+)(withRouter(RegisterHome));
 
 export async function getStaticProps() {
     let categories = await getCategories();

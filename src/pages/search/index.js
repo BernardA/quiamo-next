@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
 import {
     NavigateBefore,
@@ -206,7 +207,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(Search);
+)(withRouter(Search));
 
 const queryQl = `
            query SearchMain(

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import Header from './header';
 import Footer from './footer';
@@ -6,7 +7,8 @@ import SessionHander from './sessionHandler';
 import styles from '../styles/layout.module.scss';
 
 
-const Layout = ({ children, categories, router }) => {
+const Layout = ({ children, categories }) => {
+    const router = useRouter();
     return (
         <div className={styles.container}>
             <div>
@@ -27,7 +29,6 @@ const Layout = ({ children, categories, router }) => {
 Layout.propTypes = {
     children: PropTypes.node.isRequired,
     categories: PropTypes.array.isRequired,
-    router: PropTypes.object.isRequired,
 };
 
 export default Layout;

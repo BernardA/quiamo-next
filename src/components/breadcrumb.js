@@ -11,7 +11,7 @@ export default function Breadcrumb(props) {
                 links.map((link) => {
                     if (link.href) {
                         return (
-                            <Link key={link.href} color="inherit" href={link.href}>
+                            <Link key={link.href} color="inherit" href={link.href} as={link.href}>
                                 {link.text}
                             </Link>
                         );

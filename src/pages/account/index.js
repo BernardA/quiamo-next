@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import Link from 'next/link';
+import { withRouter } from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
 import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';
@@ -231,6 +231,7 @@ class Account extends React.Component {
                                         <Link
                                             className={classes.link}
                                             href="/account/change-profile"
+                                            
                                         >
                                             <ListItem
                                                 button
@@ -251,6 +252,7 @@ class Account extends React.Component {
                                         <Link
                                             className={classes.link}
                                             href="/account/change-address"
+                                            
                                         >
                                             <ListItem
                                                 button
@@ -271,6 +273,7 @@ class Account extends React.Component {
                                         <Link
                                             className={classes.link}
                                             href="/account/change-password"
+                                            
                                         >
                                             <ListItem
                                                 button
@@ -291,6 +294,7 @@ class Account extends React.Component {
                                         <Link
                                             className={classes.link}
                                             href="/account/upload-image"
+                                            
                                         >
                                             <ListItem
                                                 button
@@ -310,6 +314,7 @@ class Account extends React.Component {
                                         <Link
                                             className={classes.link}
                                             href="/account/insert-provider"
+                                            
                                         >
                                             <ListItem
                                                 button
@@ -395,7 +400,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(withStyles(styles)(Account)));
+)(withStyles(styles)(withRouter(Account))));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

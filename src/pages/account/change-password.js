@@ -5,12 +5,15 @@ import {
 } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import FormGroup from '@material-ui/core/FormGroup';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'next/router';
+import { 
+    FormGroup,
+    Button,
+    Card,
+    CardHeader,
+    CardContent,
+    Typography,
+} from '@material-ui/core/';
 import { withCookies, Cookies } from 'react-cookie';
 import PropTypes from 'prop-types';
 import {
@@ -264,7 +267,7 @@ PasswordChangeForm = reduxForm({
 PasswordChangeForm = withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(PasswordChangeForm));
+)(withRouter(PasswordChangeForm)));
 
 export default PasswordChangeForm;
 

@@ -84,7 +84,9 @@ export default function NavDrawer(props) {
                                 key={text}
                             >
                                 <Link
-                                    href={`/search/brasil/${urlWriter(type)}/${urlWriter(text)}/0`}
+                                    href="/search/[city]/[rootCategory]/[parentCategory]/[category]"
+                                    as={`/search/brasil/${urlWriter(type)}/${urlWriter(text)}/0`}
+                                    
                                 >
                                     <ListItemText primary={text} />
                                 </Link>

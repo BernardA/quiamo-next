@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import localforage from 'localforage';
-import Hidden from '@material-ui/core/Hidden';
+import { Hidden } from '@material-ui/core/';
 import PropTypes from 'prop-types';
 import { Loading } from '../../components/loading';
 import AdDetails from '../../components/adDetails';
@@ -104,7 +105,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(Adview);
+)(withRouter(Adview));
 
 export async function getServerSideProps() {
     let categories = await getCategories();

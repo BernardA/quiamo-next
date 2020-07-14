@@ -66,7 +66,7 @@ const NavMobile = (props) => {
                         onClick={toggleCategoryMenu(true, main[0])}
                         className={styles.overrideItem}
                     >
-                        <Link className={styles.disabledLink} href="/">
+                        <Link className={styles.disabledLink} href="/" >
                             <div>
                                 <span>{main[0]}</span>
                                 <NavigateNext fontSize="small" />
@@ -79,7 +79,7 @@ const NavMobile = (props) => {
                     <ListItem
                         onClick={toggleCategoryMenu(true, main[1])}
                     >
-                        <Link className={styles.disabledLink} href="/">
+                        <Link className={styles.disabledLink} href="/" >
                             <div>
                                 <span>{main[1]}</span>
                                 <NavigateNext fontSize="small" />

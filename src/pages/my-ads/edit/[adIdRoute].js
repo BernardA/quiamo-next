@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';
-import Button from '@material-ui/core/Button';
-import FormGroup from '@material-ui/core/FormGroup';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {
+    Button,
+    FormGroup,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Typography,
+} from '@material-ui/core/';
+import { ExpandMore } from '@material-ui/icons/';
 import PropTypes from 'prop-types';
 import {
     actionGetAd,
@@ -240,18 +243,18 @@ class AdEdit extends React.Component {
                             </FormGroup>
                             {router.pathname.includes('my-ads') ?
                                 (
-                                    <ExpansionPanel>
-                                        <ExpansionPanelSummary
-                                            expandIcon={<ExpandMoreIcon />}
+                                    <Accordion>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMore />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
                                         >
                                             <Typography>Modify ad</Typography>
-                                        </ExpansionPanelSummary>
-                                        <ExpansionPanelDetails>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
                                             <AdEditForm ad={ad} />
-                                        </ExpansionPanelDetails>
-                                    </ExpansionPanel>
+                                        </AccordionDetails>
+                                    </Accordion>
                                 ) : null}
                         </div>
                     </>
@@ -303,7 +306,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(AdEdit));
+)(withRouter(AdEdit)));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

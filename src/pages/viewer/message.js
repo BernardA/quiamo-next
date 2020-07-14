@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Carousel from 'react-images';
 import PDFViewer from 'pdf-viewer-reactjs';
 import { Button } from '@material-ui/core';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 // import PropTypes from 'prop-types';
 import {
     MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES,
@@ -59,7 +59,9 @@ const Viewer = () => {
             <div className={styles.viewer}>
                 <Link
                     className={styles.link}
-                    to={`/mailbox/${mailbox}/${messageId}`}
+                    href={`/mailbox/${mailbox}/${messageId}`}
+                    as={`/mailbox/${mailbox}/${messageId}`}
+                    
                     aria-label="back to message"
                 >
                     <Button

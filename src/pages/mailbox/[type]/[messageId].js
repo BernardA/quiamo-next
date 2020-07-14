@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import localforage from 'localforage';
+import { withRouter } from 'next/router';
 import { withCookies, Cookies } from 'react-cookie';
 import PropTypes from 'prop-types';
 import MailboxChoices from '../../../components/mailboxChoices';
@@ -44,8 +45,9 @@ class MailboxHome extends React.Component {
     }
 
     componentDidMount() {
+        console.log('MAILBOX MOUNT', this.props);
         this.updateLocalState();
-        const { type, messageId } = this.props;
+        const { router: { query: { type, messageId } } }= this.props;
         this.setState({
             routeParams: {
                 type,
@@ -62,8 +64,6 @@ class MailboxHome extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         const {
-            type,
-            messageId,
             dataMailbox,
             cookies,
             userProfile,
@@ -71,7 +71,10 @@ class MailboxHome extends React.Component {
             errorBlockUser,
             router,
         } = this.props;
-        if (prevProps.router.pathname !== router.pathname) {
+        const { query: { type, messageId } } = router;
+        console.log('MAILBOX UPDATE', this.props);
+        console.log('MAILBOX PREVPROPS', prevProps);
+        if (prevProps.router.query !== router.query) {
             this.setState({
                 isActiveNewMessage: false,
                 messageContent: null,
@@ -240,7 +243,7 @@ class MailboxHome extends React.Component {
 
     setMessages = () => {
         const { mailbox: { inbox, outbox, threads } } = this.state;
-        const { type, messageId } = this.props;
+        const { router:{ query: { type, messageId } } } = this.props;
         // set all messages = outbox and change if inbox
         let allMessages = outbox;
         let inb = [];
@@ -513,6 +516,7 @@ class MailboxHome extends React.Component {
                                     {!messageContent && !isActiveNewMessage ?
                                         (
                                             <Inoutbox
+                                                router={router}
                                                 allMessages={allMessages}
                                                 messagesType={routeParams.type}
                                                 handleMessageStatusUpdate={
@@ -536,8 +540,6 @@ class MailboxHome extends React.Component {
 
 MailboxHome.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
-    type: PropTypes.string.isRequired,
-    messageId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isLoadingBlockUser: PropTypes.bool.isRequired,
     isLoadingAuth: PropTypes.bool.isRequired,
@@ -579,7 +581,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(MailboxHome));
+)(withRouter(MailboxHome)));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

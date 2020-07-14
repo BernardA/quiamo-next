@@ -43,8 +43,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import Layout from '../components/layout';
 
 function MyApp(props) {
-    const { Component, pageProps, router } = props;
-    pageProps.router = router;
+    const { Component, pageProps } = props;
     React.useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector('#jss-server-side');
@@ -66,7 +65,6 @@ function MyApp(props) {
                 <CssBaseline />
                 <Layout 
                     categories={pageProps.categories || []} 
-                    router={router}
                 >
                     <Component {...pageProps} />
                 </Layout>

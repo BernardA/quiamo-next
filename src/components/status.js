@@ -37,6 +37,7 @@ class Status extends React.Component {
                             <div className={styles.signer}>
                                 <Link
                                     href="/login"
+                                    
                                 >
                                     <AccountCircle
                                         aria-controls="customized-menu"

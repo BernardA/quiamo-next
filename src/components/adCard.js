@@ -115,7 +115,7 @@ const AdCard = (props) => {
     }
     return (
         <Card>
-            <ButtonBase component={Link} to={`/adview/${ad._id}`}>
+            <ButtonBase component={Link} href="/adview/[adId]" as={`/adview/${ad._id}`}>
                 <CardContent className={classes.horizontal}>
                     <GridListTile
                         component="div"

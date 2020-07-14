@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';
 import PropTypes from 'prop-types';
@@ -169,7 +170,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(MyBidsHome));
+)(withRouter(MyBidsHome)));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import { withCookies, Cookies } from 'react-cookie';
 import localforage from 'localforage';
 import PropTypes from 'prop-types';
@@ -90,7 +91,7 @@ function mapDispatchToProps(dispatch) {
 export default withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(MyAdsHome));
+)(withRouter(MyAdsHome)));
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281

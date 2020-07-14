@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import {
     actionGetAd,
@@ -100,7 +101,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(MyAdsBids);
+)(withRouter(MyAdsBids));
 
 export async function getServerSideProps() {
     let categories = await getCategories();

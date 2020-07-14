@@ -105,6 +105,7 @@ class MessageDetails extends React.Component {
                                             messageId: message._id,  
                                         }
                                     }}
+                                    
                                 >
                                     {attachment.filename}
                                 </Link>
