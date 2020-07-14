@@ -89,7 +89,7 @@ class MessageForm extends React.Component {
                     errors: {},
                 },
             });
-            setTimeout(() => router.push('/mailbox/inbox/0'), 3000);
+            setTimeout(() => router.push('/mailbox/[type]/[messageId]', '/mailbox/inbox/0'), 3000);
         }
 
         if (!prevProps.errorPostMessage && this.props.errorPostMessage) {
@@ -269,7 +269,7 @@ class MessageForm extends React.Component {
             document.getElementById(`file${i}`).parentElement.style.display = 'none';
         }
         reset();
-        router.push('/mailbox/inbox/0');
+        router.push('/mailbox/[type]/[messageId]', '/mailbox/inbox/0');
     };
 
     handleNotificationDismiss = () => {

@@ -133,7 +133,7 @@ class Ad extends React.Component {
             }
         }
         if (clas.includes('goToAd')) {
-            Router.push(`/adview/${this.props.dataAd.ad._id}`);
+            Router.push('/adview/[adId]', `/adview/${this.props.dataAd.ad._id}`);
         }
     }
 

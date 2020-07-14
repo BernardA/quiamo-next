@@ -145,7 +145,7 @@ class Inoutbox extends React.Component {
                 if (messagesType === 'inbox') {
                     handleMessageStatusUpdate(event, rowData[0]);
                 }
-                router.push(`/mailbox/${messagesType}/${rowData[0]}`);
+                router.push('/mailbox/[type]/[messageId]', `/mailbox/${messagesType}/${rowData[0]}`);
             },
             setRowProps: (row) => {
                 return {

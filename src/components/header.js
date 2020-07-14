@@ -113,7 +113,7 @@ export default function Header(props) {
             ) : null}
             <header>
                 <div className={classes.headerTop}>
-                    <Link href="/"  aria-label="go to homepage">
+                    <Link href="/" aria-label="go to homepage">
                         <img
                             src="/images/main-logo.png"
                             alt="quiamo logo"

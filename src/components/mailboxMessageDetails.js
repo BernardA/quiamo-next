@@ -8,9 +8,9 @@ import {
     TableCell,
     TableRow,
     Chip,
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
 } from '@material-ui/core';
 import {
     PersonOutline,
@@ -97,15 +97,8 @@ class MessageDetails extends React.Component {
                         <TableRow key={attachment.filename} id="attach_dialog">
                             <TableCell>
                                 <Link
-                                    href={{
-                                        pathname: '/viewer/message',
-                                        query: {
-                                            fileName: attachment.filename,
-                                            mailbox: routeParams.type,
-                                            messageId: message._id,  
-                                        }
-                                    }}
-                                    
+                                    href='/viewer/message/[fileName]/[type]/[messageId]'
+                                    as={`/viewer/message/${attachment.filename}/${routeParams.type}/${message._id}`}
                                 >
                                     {attachment.filename}
                                 </Link>
@@ -122,14 +115,14 @@ class MessageDetails extends React.Component {
             return list.map((message, index) => {
                 const messageCount = list.length - index;
                 return (
-                    <ExpansionPanel
+                    <Accordion
                         key={message.id}
                         // id={`message_all_${index}`}
                         className={styles.threadRoot}
                     >
-                        <ExpansionPanelSummary
+                        <AccordionSummary
                             // id={`message_top_${index}`}
-                            className={styles.MuiExpansionPanelSummary}
+                            className={styles.MuiAccordionSummary}
                             expandIcon={<ExpandMore />}
                             // onClick={event => {
                             //    toggleThreadOld(event);
@@ -159,10 +152,10 @@ class MessageDetails extends React.Component {
                                     {showtime(message.sentAt)}
                                 </Typography>
                             </div>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails
+                        </AccordionSummary>
+                        <AccordionDetails
                             // id={`message_bottom_${index}`}
-                            className={styles.MuiExpansionPanelDetails}
+                            className={styles.MuiAccordionDetails}
                         >
                             <div className={styles.messageViewer}>
                                 {ReactHtmlParser(message.message)}
@@ -174,8 +167,8 @@ class MessageDetails extends React.Component {
                                     </TableBody>
                                 </Table>
                             </div>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 );
             });
         };

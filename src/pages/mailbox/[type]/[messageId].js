@@ -159,7 +159,9 @@ class MailboxHome extends React.Component {
             }
             // if message deleted, navigate to inbox
             if (isDelete) {
-                router.push('/mailbox/inbox/0');
+                router.push(
+                    '/mailbox/[type]/[messageId]',
+                    '/mailbox/inbox/0');
             } else {
                 this.setMessages();
             }
@@ -443,7 +445,9 @@ class MailboxHome extends React.Component {
                 messageContent: null,
                 allMessages: [],
             });
-            this.props.router.push('/mailbox/inbox/0');
+            this.props.router.push(
+                '/mailbox/[type]/[messageId]',
+                '/mailbox/inbox/0');
         }
     };
 

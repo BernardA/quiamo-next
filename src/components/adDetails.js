@@ -175,7 +175,7 @@ const AdDetails = (props) => {
                         {!userProfile || !isAlreadyBid() ? (
                             <Link
                                 href={{
-                                    pathname: `/bid/${ad._id}`,
+                                    pathname: '/bid/[adId]',
                                     query: {
                                         adViewPath: router.pathname
                                     }

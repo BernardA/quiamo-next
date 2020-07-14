@@ -200,7 +200,9 @@ class AdList extends React.Component {
                             <EditOutlined
                                 id={tableMeta.rowData[0]}
                                 className={classes.clickable}
-                                onClick={() => router.push(`/my-ads/edit/${tableMeta.rowData[0]}`)}
+                                onClick={() => router.push(
+                                    '/my-ads/edit/[adId]',
+                                    `/my-ads/edit/${tableMeta.rowData[0]}`)}
                             />
                         );
                     },
@@ -216,7 +218,9 @@ class AdList extends React.Component {
                                 <GavelOutlined
                                     id={tableMeta.rowData[0]}
                                     className={classes.clickable}
-                                    onClick={() => router.push(`/my-ads/bids/${tableMeta.rowData[0]}`)}
+                                    onClick={() => router.push(
+                                        '/my-ads/bids/[adId]',
+                                        `/my-ads/bids/${tableMeta.rowData[0]}`)}
                                 />
                             </Badge>
                         );

@@ -27,6 +27,7 @@
     "react": "16.13.1",
     "react-cookie": "^4.0.3",
     "react-device-detect": "^1.13.1",
+    "react-dnd": "^7.3.0",
     "react-dom": "16.13.1",
     "react-geocode": "^0.2.1",
     "react-html-parser": "^2.0.2",

@@ -56,7 +56,7 @@ const Nav = (props) => {
                             open={isOpenProductsMenu}
                             categories={categories}
                         />
-                        <Link href="/"  onClick={(event) => event.preventDefault}>
+                        <Link href="/" onClick={(event) => event.preventDefault}>
                             <div className={styles.itemWrap}>
                                 {main[0]}
                                 <ExpandMore />
@@ -77,7 +77,7 @@ const Nav = (props) => {
                             open={isOpenServicesMenu}
                             categories={categories}
                         />
-                        <Link href="/"  onClick={(event) => event.preventDefault}>
+                        <Link href="/" onClick={(event) => event.preventDefault}>
                             <div className={styles.itemWrap}>
                                 {main[1]}
                                 <ExpandMore />

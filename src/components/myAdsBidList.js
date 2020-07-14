@@ -1,9 +1,9 @@
 import React from 'react';
 import { withCookies, Cookies } from 'react-cookie';
 import {
-    ExpansionPanel,
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     Button,
     List,
@@ -27,7 +27,7 @@ import { showtime } from '../tools/functions';
 
 const getMuiTheme = () => createMuiTheme({
     overrides: {
-        MuiExpansionPanelSummary: {
+        MuiAccordionSummary: {
             content: {
                 width: '80%',
             },
@@ -67,8 +67,8 @@ class MyAdsBidList extends React.Component {
                     {bids.map((bid) => {
                         return (
                             <MuiThemeProvider key={bid.id} theme={getMuiTheme()}>
-                                <ExpansionPanel className={styles.root}>
-                                    <ExpansionPanelSummary
+                                <Accordion className={styles.root}>
+                                    <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                         aria-controls={`panel${bid.id}-content`}
                                         id={`panel${bid.id}-header`}
@@ -82,8 +82,8 @@ class MyAdsBidList extends React.Component {
                                                 {budgetBid(bid)}
                                             </Typography>
                                         </div>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
                                         <List>
                                             <ListItem>
                                                 <ListItemText
@@ -110,6 +110,7 @@ class MyAdsBidList extends React.Component {
                                                         color="primary"
                                                         fullWidth
                                                         onClick={() => router.push(
+                                                            '/mailbox/[type]/[messageId]',
                                                             `/mailbox/inbox/${bid.message[0]._id}`,
                                                         )}
                                                     >
@@ -117,8 +118,8 @@ class MyAdsBidList extends React.Component {
                                                     </Button>
                                                 ) : null}
                                         </List>
-                                    </ExpansionPanelDetails>
-                                </ExpansionPanel>
+                                    </AccordionDetails>
+                                </Accordion>
                             </MuiThemeProvider>
                         );
                     })}

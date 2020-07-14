@@ -88,7 +88,9 @@ class SearchAdsForm extends React.Component {
         const cat = urlWriter(subcat[0].parent.title);
         const subcategory = urlWriter(values.subcategory);
         const place = urlWriter(values.place);
-        router.push(`/search/${place}/${type}/${cat}/${subcategory}`);
+        router.push(
+            '/search/[city]/[rootCategory]/[parentCategory]/[category]',
+            `/search/${place}/${type}/${cat}/${subcategory}`);
     };
 
     handleTypeAheadPlaces = (event) => {
@@ -153,7 +155,9 @@ class SearchAdsForm extends React.Component {
 
     resetOrReturn = () => {
         if (this.props.router.pathname !== '/search/0/0/0/0') {
-            this.props.router.push('/search/0/0/0/0');
+            this.props.router.push(
+                '/search/[city]/[rootCategory]/[parentCategory]/[category]',
+                '/search/0/0/0/0');
         }
         // document.getElementById('no_cat_search').innerHTML = '';
         // this.setState({ isNullPlaceSearchResult: true });

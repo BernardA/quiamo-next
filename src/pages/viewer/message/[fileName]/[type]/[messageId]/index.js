@@ -7,31 +7,32 @@ import { useRouter } from 'next/router';
 import {
     MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES,
     MESSAGE_ATTACHMENT_DIRECTORY,
-} from '../../parameters';
-import NotifierInline from '../../components/notifierInline';
-import Breadcrumb from '../../components/breadcrumb';
-import styles from '../../styles/mailbox.module.scss';
-import { Loading } from '../../components/loading';
-import Link from '../../components/link';
-import getCategories from '../../lib/getCategories';
-import { handlePrivateRoute } from '../../tools/functions';
+} from '../../../../../../parameters';
+import NotifierInline from '../../../../../../components/notifierInline';
+import Breadcrumb from '../../../../../../components/breadcrumb';
+import styles from '../../../../../../styles/mailbox.module.scss';
+import { Loading } from '../../../../../../components/loading';
+import Link from '../../../../../../components/link';
+import getCategories from '../../../../../../lib/getCategories';
+import { handlePrivateRoute } from '../../../../../../tools/functions';
 
 const Viewer = () => {
     const router = useRouter();
-    const { query: {fileName, mailbox, messageId }} = router;
+    const { query: { fileName, type, messageId } } = router;
+    console.log('router', router);
     const [message, setMessage] = useState(null);
     useEffect(() => {
         const fileType = fileName.split('.').pop();
         const isAccepted = MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES.filter(
-            (type) => {
-                return type.includes(fileType);
+            (ftype) => {
+                return ftype.includes(fileType);
             },
         );
         if (isAccepted.length === 0) {
             setMessage('The file type is invalid.');
         }
     });
-    const source = `${process.env.API_HOST}${MESSAGE_ATTACHMENT_DIRECTORY}${fileName}`;
+    const source = `${process.env.NEXT_PUBLIC_API_HOST}${MESSAGE_ATTACHMENT_DIRECTORY}${fileName}`;
     const images = [{ source }];
     const customCarouselStyles = {
         view: (base) => ({
@@ -45,13 +46,18 @@ const Viewer = () => {
         <main>
             <Breadcrumb
                 links={[
-                    { href: '/mailbox/inbox/0', text: 'mailbox' },
+                    { 
+                        href: '/mailbox/[type]/[messageId]',
+                        as: '/mailbox/inbox/0', 
+                        text: 'mailbox' },
                     {
-                        href: `/mailbox/${mailbox}/0`,
-                        text: mailbox,
+                        href: '/mailbox/[type]/[messageId]',
+                        as: `/mailbox/${type}/0`,
+                        text: type,
                     },
                     {
-                        href: `/mailbox/${mailbox}/${messageId}`,
+                        href: '/mailbox/[type]/[messageId]',
+                        as: `/mailbox/${type}/${messageId}`,
                         text: 'message',
                     },
                 ]}
@@ -59,8 +65,8 @@ const Viewer = () => {
             <div className={styles.viewer}>
                 <Link
                     className={styles.link}
-                    href={`/mailbox/${mailbox}/${messageId}`}
-                    as={`/mailbox/${mailbox}/${messageId}`}
+                    href='/mailbox/[type]/[messageId]'
+                    as={`/mailbox/${type}/${messageId}`}
                     
                     aria-label="back to message"
                 >

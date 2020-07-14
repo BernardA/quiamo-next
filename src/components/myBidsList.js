@@ -150,7 +150,9 @@ const BidList = (props) => {
                         <Visibility
                             id={tableMeta.rowData[0]}
                             className={classes.clickable}
-                            onClick={() => router.push(`/my-bids/view/${value}`)}
+                            onClick={() => router.push(
+                                '/my-bids/view/[adId]',
+                                `/my-bids/view/${value}`)}
                         />
                     );
                 },
