@@ -67,15 +67,15 @@ class Login extends React.Component {
         const isAdmin =
             !!roles.includes('ROLE_ADMIN') ||
             !!roles.includes('ROLE_SUPERADMIN');
-        let redirectPage = 'homepage';
-        let redirectPath = '/';
+        let redirectAs = '/';
+        let redirectHref = '/';
         if (isAdmin) {
-            redirectPage = 'admin';
-            redirectPath = '/admin';
+            redirectAs = 'admin';
+            redirectHref = '/admin';
         }
-        if (router.query && router.query.from) {
-            redirectPage = router.query.from;
-            redirectPath = router.query.from;
+        if (router.query && router.query.href) {
+            redirectHref = router.query.href;
+            redirectAs= router.query.as;
         }
         localforage.getItem('pendingAdId').then((value) => {
             let isPendingAd = false;
@@ -96,7 +96,7 @@ class Login extends React.Component {
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
                             {isPendingAd ? 'Your ad was published. ' : null}
-                            {`You will be redirected to ${redirectPage}`}
+                            {`You will be redirected to ${redirectAs}`}
                         </Typography>
                     </>
                 );
@@ -111,7 +111,7 @@ class Login extends React.Component {
             });
             // redirect user after timeout for notification
             setTimeout(() => {
-                router.push(redirectPath);
+                router.push(redirectHref, redirectAs);
             }, 3000);
         });
     };
@@ -170,6 +170,7 @@ class Login extends React.Component {
     };
 
     render() {
+        console.log('LOGIN', this.props);
         const { isLoading, isOnline, router } = this.props;
         const { isErrorSocialLogin } = this.state;
         return (
@@ -188,7 +189,7 @@ class Login extends React.Component {
                                         Login
                                     </Typography>
                                 )}
-                                subheader={router.query && router.query.from ? (
+                                subheader={router.query && router.query.href ? (
                                     <Typography
                                         className={styles.subheader}
                                     >

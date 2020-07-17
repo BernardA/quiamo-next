@@ -3,7 +3,7 @@ import Carousel from 'react-images';
 import PDFViewer from 'pdf-viewer-reactjs';
 import { Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {
     MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES,
     MESSAGE_ATTACHMENT_DIRECTORY,
@@ -14,13 +14,19 @@ import styles from '../../../../../../styles/mailbox.module.scss';
 import { Loading } from '../../../../../../components/loading';
 import Link from '../../../../../../components/link';
 import getCategories from '../../../../../../lib/getCategories';
-import { handlePrivateRoute } from '../../../../../../tools/functions';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../../../../../tools/functions';
 
-const Viewer = () => {
+const Viewer = (props) => {
     const router = useRouter();
     const { query: { fileName, type, messageId } } = router;
     console.log('router', router);
+    const { isAuth : { isAuthenticated }} = props;
     const [message, setMessage] = useState(null);
+    useEffect(() => {
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated(router);
+        }
+    }, []);
     useEffect(() => {
         const fileType = fileName.split('.').pop();
         const isAccepted = MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES.filter(
@@ -31,7 +37,7 @@ const Viewer = () => {
         if (isAccepted.length === 0) {
             setMessage('The file type is invalid.');
         }
-    });
+    }, []);
     const source = `${process.env.NEXT_PUBLIC_API_HOST}${MESSAGE_ATTACHMENT_DIRECTORY}${fileName}`;
     const images = [{ source }];
     const customCarouselStyles = {
@@ -41,7 +47,9 @@ const Viewer = () => {
             margin: '0 auto',
         }),
     };
-
+    if (!isAuthenticated) {
+        return null;
+    }
     return (
         <main>
             <Breadcrumb
@@ -109,19 +117,19 @@ const Viewer = () => {
     );
 };
 
-// Viewer.propTypes = {
-// };
+Viewer.propTypes = {
+    isAuth: PropTypes.object.isRequired,
+};
 
 export default Viewer;
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

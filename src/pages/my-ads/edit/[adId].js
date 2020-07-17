@@ -14,7 +14,6 @@ import {
 import { ExpandMore } from '@material-ui/icons/';
 import PropTypes from 'prop-types';
 import {
-    actionGetAd,
     actionGetUserProfile,
     actionDeleteAd,
     actionToggleActiveAd,
@@ -26,7 +25,8 @@ import NotifierDialog from '../../../components/notifierDialog';
 import Breadcrumb from '../../../components/breadcrumb';
 import styles from '../../../styles/admin.module.scss';
 import getCategories from '../../../lib/getCategories';
-import { handlePrivateRoute } from '../../../tools/functions';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../../tools/functions';
+import { apiQl } from '../../../store/sagas';
 
 class AdEdit extends React.Component {
     constructor(props) {
@@ -43,8 +43,14 @@ class AdEdit extends React.Component {
     }
 
     componentDidMount() {
-        const { adIdRoute } = this.props;
-        this.props.actionGetAd(adIdRoute);
+        const { ad, isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated();
+        } else {
+            this.setState({
+                ad,
+            });
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -197,9 +203,16 @@ class AdEdit extends React.Component {
 
     render() {
         const {
-            isLoadingAd, isLoading, adIdRoute, router,
+            isLoadingAd,
+            isLoading,
+            adId,
+            router,
+            isAuth: { isAuthenticated },
         } = this.props;
         const { ad } = this.state;
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main>
                 {isLoading || isLoadingAd || !ad ? <Loading /> : null}
@@ -208,7 +221,7 @@ class AdEdit extends React.Component {
                         <Breadcrumb links={[
                             { href: '/admin', text: 'admin' },
                             { href: '/admin/ads', text: 'ads' },
-                            { href: null, text: adIdRoute },
+                            { href: null, text: adId },
                         ]}
                         />
                     ) : (
@@ -270,19 +283,20 @@ class AdEdit extends React.Component {
 
 AdEdit.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
-    actionGetAd: PropTypes.func.isRequired,
     actionGetUserProfile: PropTypes.func.isRequired,
     actionDeleteAd: PropTypes.func.isRequired,
     actionToggleActiveAd: PropTypes.func.isRequired,
     isLoadingAd: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    adIdRoute: PropTypes.string.isRequired,
+    adId: PropTypes.string.isRequired,
     dataGetAd: PropTypes.any,
     dataPutAd: PropTypes.any,
     dataDeleteAd: PropTypes.any,
     dataToggleActiveAd: PropTypes.any,
     errorReq: PropTypes.any,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
+    ad: PropTypes.any,
 };
 
 const mapStateToProps = (state) => {
@@ -294,7 +308,6 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
-            actionGetAd,
             actionDeleteAd,
             actionToggleActiveAd,
             actionGetUserProfile,
@@ -308,14 +321,78 @@ export default withCookies(connect(
     mapDispatchToProps,
 )(withRouter(AdEdit)));
 
+const queryQl = `query getAd($id: ID!, $isDeleted: Boolean){
+    ad(id: $id) {
+        id
+        _id
+        createdAt
+        description
+        budget
+        budgetType
+        rentTime
+        isActive
+        bids(
+            isDeleted: $isDeleted
+            _order: {message_sentAt: "DESC"}
+        ){
+            id
+            isDeleted
+            bidder{
+                _id
+                id
+                username
+            }
+            bidType
+            bid
+            message{
+                id
+                _id
+                subject
+                message
+                sentAt
+            }
+        }
+        user {
+            id
+            username
+            image{
+                filename
+            }
+            address{
+                city
+            }
+        }
+        category {
+            id
+            title
+            parent{
+                title
+            }
+            root{
+                title
+            }
+        }
+    }
+}`;
+
 export async function getServerSideProps(context) {
-    // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
+    let ad = null;
+    const isAuth = handleCheckAuthentication(context);
+    if (isAuth.isAuthenticated){
+        const { params: { adId } } = context;
+        const variables = {
+            id: `/api/ads/${adId}`,
+            isDeleted: false,
+        };
+        const data = await apiQl(queryQl, variables, false);
+        ad = data.data.ad;
+    }
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth,
+            ad
         },
     };
 }

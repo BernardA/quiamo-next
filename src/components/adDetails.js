@@ -78,19 +78,26 @@ const AdDetails = (props) => {
         userProfile, 
         isAction, 
         classes,
-        router,
     } = props;
     // if user has no img on profile, get placeholder img
-    let imgPath = `${process.env.API_HOST}${AVATAR_PLACEHOLDER_PATH}`;
+    let imgPath = `${process.env.NEXT_PUBLIC_API_HOST}${AVATAR_PLACEHOLDER_PATH}`;
     if (ad.user.image) {
-        imgPath = `${process.env.API_HOST}${USER_IMAGE_DIRECTORY}${ad.user.image.filename}`;
+        imgPath = `${process.env.NEXT_PUBLIC_API_HOST}${USER_IMAGE_DIRECTORY}${ad.user.image.filename}`;
     }
+    const isOwnAd = () => {
+        return userProfile && userProfile.id === ad.user.id;
+    }
+
     const isAlreadyBid = () => {
-        const isAd = userProfile.bids.length > 0 && userProfile.bids.filter((bid) => {
-            return bid.ad._id === ad._id;
-        });
-        return isAd.length > 0;
+        let isAd = false;
+        if (userProfile && userProfile.bid.length > 0) {
+            isAd = userProfile.bids.filter((bid) => {
+                return bid.ad._id === ad._id;
+            });
+        }
+        return isAd && isAd.length > 0;
     };
+
     const budgetAd = () => {
         if (!ad.budget) {
             return ad.budgetType;
@@ -170,18 +177,12 @@ const AdDetails = (props) => {
                         </ListItem>
                     </List>
                 </CardContent>
-                {isAction ? (
+                {isAction && !isOwnAd() ? (
                     <CardActions>
                         {!userProfile || !isAlreadyBid() ? (
                             <Link
-                                href={{
-                                    pathname: '/bid/[adId]',
-                                    query: {
-                                        adViewPath: router.pathname
-                                    }
-                                }}
+                                href='/bid/[adId]'
                                 as={`/bid/${ad._id}`}
-                                
                             >
                                 <Button
                                     variant="contained"
@@ -207,7 +208,6 @@ AdDetails.propTypes = {
     userProfile: PropTypes.any,
     isAction: PropTypes.bool.isRequired,
     classes: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(AdDetails);

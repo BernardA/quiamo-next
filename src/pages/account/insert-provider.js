@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
+import { withRouter } from 'next/router';
 import {
     Button,
     Card,
@@ -22,7 +23,7 @@ import { renderInput } from '../../components/formInputs';
 import { Loading } from '../../components/loading';
 import styles from '../../styles/login.module.scss';
 import { minLength, maxLength } from '../../tools/validator';
-import { multisort, handlePrivateRoute } from '../../tools/functions';
+import { multisort, handleIsNotAuthenticated, handleCheckAuthentication } from '../../tools/functions';
 import getCategories from '../../lib/getCategories';
 import { ROOT_CATEGORIES } from '../../parameters';
 
@@ -41,6 +42,13 @@ class ProviderInsertForm extends React.Component {
                 errors: {},
             },
         };
+    }
+
+    componentDidMount() {
+        const { router, isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated(router);
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -100,6 +108,7 @@ class ProviderInsertForm extends React.Component {
             error,
             pristine,
             reset,
+            isAuth: { isAuthenticated },
         } = this.props;
         const { value } = this.state;
         const options = [];
@@ -166,6 +175,9 @@ class ProviderInsertForm extends React.Component {
                 />
             );
         };
+        if (!isAuthenticated) {
+            return null;
+        }
         if (error) {
             return <div>{error.messageKey}</div>;
         }
@@ -259,6 +271,8 @@ ProviderInsertForm.propTypes = {
     invalid: PropTypes.bool.isRequired,
     pristine: PropTypes.bool.isRequired,
     reset: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -284,7 +298,7 @@ function mapDispatchToProps(dispatch) {
 ProviderInsertForm = withCookies(connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ProviderInsertForm));
+)(withRouter(ProviderInsertForm)));
 
 export default reduxForm({
     form: 'ProviderInsertForm',
@@ -292,12 +306,11 @@ export default reduxForm({
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

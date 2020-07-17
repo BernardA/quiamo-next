@@ -10,7 +10,7 @@ import {
 import { Loading } from '../../components/loading';
 import AdList from '../../components/myAdsList';
 import getCategories from '../../lib/getCategories';
-import { handlePrivateRoute } from '../../tools/functions';
+import { handleIsNotAuthenticated, handleCheckAuthentication } from '../../tools/functions';
 
 class MyAdsHome extends React.Component {
     constructor(props) {
@@ -21,7 +21,12 @@ class MyAdsHome extends React.Component {
     }
 
     componentDidMount() {
-        this.setProfile();
+        const { isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated();
+        } else { 
+            this.setProfile();
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -50,11 +55,15 @@ class MyAdsHome extends React.Component {
 
     render() {
         const { userProfile } = this.state;
-        const { isLoadingProfile, isLoadingUserAds } = this.props;
+        const { isLoadingProfile, isLoadingUserAds, isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main>
                 {isLoadingUserAds ||
-                    (isLoadingProfile && !userProfile) || !userProfile ? <Loading /> : null}
+                    (isLoadingProfile && !userProfile) || !userProfile ? <Loading /> 
+                    : null}
                 {
                     userProfile ? <AdList userProfile={userProfile} /> : null
                 }
@@ -69,6 +78,7 @@ MyAdsHome.propTypes = {
     userProfile: PropTypes.any,
     isLoadingProfile: PropTypes.bool.isRequired,
     isLoadingUserAds: PropTypes.bool.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -76,6 +86,7 @@ const mapStateToProps = (state) => {
         ...state.ad,
         userProfile: state.auth.userProfile,
         isLoadingProfile: state.auth.isLoading,
+        isAuth: PropTypes.object.isRequired,
     };
 };
 
@@ -95,12 +106,11 @@ export default withCookies(connect(
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

@@ -17,7 +17,7 @@ import { Loading } from '../../components/loading';
 import UserProfileChangeForm from '../../components/userProfileChangeForm';
 import styles from '../../styles/login.module.scss';
 import getCategories from '../../lib/getCategories';
-import { handlePrivateRoute } from '../../tools/functions';
+import { handleIsNotAuthenticated, handleCheckAuthentication } from '../../tools/functions';
 
 class AccountProfileChange extends React.Component {
     constructor(props) {
@@ -36,9 +36,13 @@ class AccountProfileChange extends React.Component {
     componentDidMount() {
         const {
             userProfile,
+            router,
             cookies,
-        } = this.props;
-        if (!userProfile) {
+            isAuth: { isAuthenticated },
+        } = this.props;        
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated(router);
+        } else if (!userProfile) {
             this.props.actionGetUserProfile(cookies.get('userId'));
         }
     }
@@ -96,7 +100,11 @@ class AccountProfileChange extends React.Component {
             isLoading,
             userProfile,
             isSocialLogin,
+            isAuth: { isAuthenticated },
         } = this.props;
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main>
                 {isLoading || !userProfile ? <Loading /> : null}
@@ -148,6 +156,7 @@ AccountProfileChange.propTypes = {
     userProfile: PropTypes.any,
     isSocialLogin: PropTypes.bool.isRequired,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -179,12 +188,11 @@ export default AccountProfileChange;
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

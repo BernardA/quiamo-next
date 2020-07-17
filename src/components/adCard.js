@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import Link from 'next/link';
 import { 
     Card,
     CardContent,
@@ -13,6 +12,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import LazyLoad from 'react-lazyload';
 import PropTypes from 'prop-types';
+import Link from '../components/link';
 
 const styles = (theme) => ({
     root: {
@@ -73,9 +73,10 @@ const AdCard = (props) => {
     if (display && display === 'vertical') {
         return (
             <Card className={classes.root}>
-                <a
+                <Link
                     className={classes.link}
-                    href={`/adview/${ad._id}`}
+                    href='/adview/[adId]'
+                    as={`/adview/${ad._id}`}
                 >
                     <CardContent className={classes.vertical}>
                         <GridListTile
@@ -109,7 +110,7 @@ const AdCard = (props) => {
                             </ListItem>
                         </List>
                     </CardContent>
-                </a>
+                </Link>
             </Card>
         );
     }

@@ -1,116 +1,124 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'next/router';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import {
-    actionGetAd,
-} from '../../../store/actions';
 import { Loading } from '../../../components/loading';
 import AdDetails from '../../../components/adDetails';
 import BidList from '../../../components/myAdsBidList';
-import NotifierDialog from '../../../components/notifierDialog';
 import Breadcrumb from '../../../components/breadcrumb';
 import getCategories from '../../../lib/getCategories';
-import { handlePrivateRoute } from '../../../tools/functions';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../../tools/functions';
+import { apiQl } from '../../../store/sagas';
 
-class MyAdsBids extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            ad: null,
-            notification: {
-                status: '',
-                title: '',
-                message: '',
-                errors: {},
-            },
-        };
-    }
-
-    componentDidMount() {
-        const { adIdRoute } = this.props;
-        this.props.actionGetAd(adIdRoute);
-    }
-
-    componentDidUpdate(prevProps) {
-        const { dataGetAd } = this.props;
-        if (!prevProps.dataGetAd && dataGetAd) {
-            this.setState({ ad: dataGetAd });
+const  MyAdsBids = (props) => {
+    const router = useRouter();
+    const { 
+        ad, 
+        isAuth: { isAuthenticated }, 
+    } = props;
+    useEffect(() => {
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated(router);
         }
+    }, []);
+    const isMyAds = router.pathname.includes('my-ads');
+    const parentLocation = isMyAds ? 'my-ads' : 'my-bids';
+    if (!isAuthenticated) {
+        return null;
     }
-
-    handleNotificationDismiss = () => {
-        this.setState({
-            notification: {
-                status: '',
-                title: '',
-                message: '',
-                errors: {},
-            },
-        });
-    }
-
-    render() {
-        const { isLoadingAd, isLoading, router } = this.props;
-        const { ad } = this.state;
-        const isMyAds = router.pathname.includes('my-ads');
-        const parentLocation = isMyAds ? 'my-ads' : 'my-bids';
-        return (
-            <main>
-                {isLoading || isLoadingAd || !ad ? <Loading /> : null}
-                <Breadcrumb links={[{ href: `/${parentLocation}`, text: parentLocation }]} />
-                {ad ? (
-                    <>
-                        <AdDetails ad={ad} isAction={false} />
-                        <BidList bids={ad.bids} isMyAds={isMyAds} />
-                    </>
-                ) : null}
-                <NotifierDialog
-                    notification={this.state.notification}
-                    handleNotificationDismiss={this.handleNotificationDismiss}
-                />
-            </main>
-        );
-    }
-}
-
-MyAdsBids.propTypes = {
-    actionGetAd: PropTypes.func.isRequired,
-    isLoadingAd: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    adIdRoute: PropTypes.string.isRequired,
-    dataGetAd: PropTypes.any,
-    router: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => {
-    return {
-        ...state.ad,
-    };
-};
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(
-        {
-            actionGetAd,
-        },
-        dispatch,
+    return (
+        <main>
+            <Breadcrumb links={[{ href: `/${parentLocation}`, text: parentLocation }]} />
+            {ad ? (
+                <>
+                    <AdDetails ad={ad} isAction={false} />
+                    <BidList bids={ad.bids} isMyAds={isMyAds} />
+                </>
+            ) : <Loading />}
+        </main>
     );
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(withRouter(MyAdsBids));
+MyAdsBids.propTypes = {
+    isAuth: PropTypes.object.isRequired,
+    ad: PropTypes.any,
+};
+
+
+export default MyAdsBids;
+
+const queryQl = `query getAd($id: ID!, $isDeleted: Boolean){
+    ad(id: $id) {
+        id
+        _id
+        createdAt
+        description
+        budget
+        budgetType
+        rentTime
+        isActive
+        bids(
+            isDeleted: $isDeleted
+            _order: {message_sentAt: "DESC"}
+        ){
+            id
+            isDeleted
+            bidder{
+                _id
+                id
+                username
+            }
+            bidType
+            bid
+            message{
+                id
+                _id
+                subject
+                message
+                sentAt
+            }
+        }
+        user {
+            id
+            username
+            image{
+                filename
+            }
+            address{
+                city
+            }
+        }
+        category {
+            id
+            title
+            parent{
+                title
+            }
+            root{
+                title
+            }
+        }
+    }
+}`;
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
+    let ad = null;
+    const isAuth = handleCheckAuthentication(context);
+    if (isAuth.isAuthenticated){
+        const { params: { adId } } = context;
+        const variables = {
+            id: `/api/ads/${adId}`,
+            isDeleted: false,
+        };
+        const data = await apiQl(queryQl, variables, false);
+        ad = data.data.ad;
+    }    
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth,
+            ad,
         },
     };
 }

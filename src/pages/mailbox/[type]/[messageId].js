@@ -17,7 +17,7 @@ import {
 } from '../../../store/actions';
 import { Loading } from '../../../components/loading';
 import getCategories from '../../../lib/getCategories';
-import { handlePrivateRoute } from '../../../tools/functions';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../../tools/functions';
 
 class MailboxHome extends React.Component {
     constructor(props) {
@@ -46,19 +46,26 @@ class MailboxHome extends React.Component {
 
     componentDidMount() {
         console.log('MAILBOX MOUNT', this.props);
-        this.updateLocalState();
-        const { router: { query: { type, messageId } } }= this.props;
-        this.setState({
-            routeParams: {
-                type,
-                messageId,
-            },
-        });
-        if (type === 'new-message') {
-            this.setState({ isActiveNewMessage: true });
-        }
-        if (this.state.allMessages.length === 0 && this.state.userProfile && this.state.mailbox) {
-            this.setMessages();
+        const { 
+            router: { query: { type, messageId } },
+            isAuth: { isAuthenticated }
+        }= this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated();
+        } else {
+            this.updateLocalState();
+            this.setState({
+                routeParams: {
+                    type,
+                    messageId,
+                },
+            });
+            if (type === 'new-message') {
+                this.setState({ isActiveNewMessage: true });
+            }
+            if (this.state.allMessages.length === 0 && this.state.userProfile && this.state.mailbox) {
+                this.setMessages();
+            }
         }
     }
 
@@ -466,7 +473,11 @@ class MailboxHome extends React.Component {
             isLoadingAuth,
             isLoadingBlockUser,
             router,
+            isAuth: { isAuthenticated },
         } = this.props;
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <>
                 <main>
@@ -557,6 +568,7 @@ MailboxHome.propTypes = {
     actionPutMessageUpdateStatus: PropTypes.func.isRequired,
     actionPostBlockUser: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -589,12 +601,11 @@ export default withCookies(connect(
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

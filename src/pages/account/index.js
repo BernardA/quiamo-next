@@ -24,7 +24,7 @@ import {
     actionLogoutInit,
 } from '../../store/actions';
 import getCategories from '../../lib/getCategories';
-import { handlePrivateRoute } from '../../tools/functions';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../tools/functions';
 import Link from '../../components/link';
 
 const styles = (theme) => ({
@@ -83,25 +83,12 @@ class Account extends React.Component {
     }
 
     componentDidMount() {
-        /*
-        const { cookies, router } = this.props;
-        console.log('ACCOUNT mount props', this.props);
-        let isPermitted = true;
-        const { isAuthenticated, isAdmin } = isAuth(cookies);
+        const { router, isAuth: { isAuthenticated }} = this.props;
         if (!isAuthenticated) {
-            isPermitted = false;
-            router.push({
-                pathname: '/login',
-                query: {from: router.pathname},
-            });
+            handleIsNotAuthenticated(router);
+        } else {
+            this.setProfile();
         }
-        if (isAuthenticated && router.pathname.includes('admin') && !isAdmin) {
-            isPermitted = false;
-            router.push('/');
-        }
-        this.setState({ isPermitted });
-        */
-        this.setProfile();
     }
 
     componentDidUpdate(prevProps) {
@@ -203,12 +190,19 @@ class Account extends React.Component {
     };
 
     render() {
-        const { classes, isLoading, isLoadingProfile, router } = this.props;
+        console.log('ACCOUNT', this.props);
+        const { 
+            classes, 
+            isLoading, 
+            isLoadingProfile, 
+            router,
+            isAuth: { isAuthenticated },
+        } = this.props;
         const { userProfile } = this.state;
 
-        // if (!isPermitted) {
-        //     return null;
-        // }
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main className={classes.root}>
                 {isLoading ||
@@ -375,6 +369,7 @@ Account.propTypes = {
     dataToggleUserStatus: PropTypes.any,
     userProfile: PropTypes.any,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -404,12 +399,11 @@ export default withCookies(connect(
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

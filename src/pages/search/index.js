@@ -6,7 +6,6 @@ import {
     NavigateBefore,
     NavigateNext,
 } from '@material-ui/icons/';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import getCategories from '../../lib/getCategories';
 import getCities from '../../lib/getCities';
@@ -16,6 +15,7 @@ import SearchAdsForm from '../../components/searchAdsForm';
 import styles from '../../styles/search.module.scss';
 import stylesPagination from '../../styles/pagination.module.scss';
 import { actionGetAdsNext, actionGetAdsPrevious } from '../../store/actions';
+import { apiQl } from '../../store/sagas';
 
 class Search extends React.Component {
     constructor(props) {
@@ -272,17 +272,6 @@ const queryQl = `
            }
        `;
 
-const apiQl = (data, variables = null) => {
-    return axios
-        .post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
-            query: data,
-            variables,
-        })
-        .then((response) => {
-            return response.data;
-        });
-};
-
 export async function getServerSideProps() {
     let categories = await getCategories();
     let cities = await getCities();
@@ -293,7 +282,7 @@ export async function getServerSideProps() {
         categoryParent: null,
         categoryId: null,
     };
-    const data = await apiQl(queryQl, variables);
+    const data = await apiQl(queryQl, variables, false);
     return {
         props: {
             categories,

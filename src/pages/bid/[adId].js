@@ -3,176 +3,81 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'next/router';
 import { withCookies, Cookies } from 'react-cookie';
-import localforage from 'localforage';
 import PropTypes from 'prop-types';
 import BidForm from '../../components/bidInsertForm';
-import { actionGetAd, actionGetUserProfile } from '../../store/actions';
-import { Loading } from '../../components/loading';
-import NotifierDialog from '../../components/notifierDialog';
+import { actionGetUserProfile } from '../../store/actions';
+import NotifierInline from '../../components/notifierInline';
 import AdDetails from '../../components/adDetails';
 import getCategories from '../../lib/getCategories';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../tools/functions';
+import { Loading } from '../../components/loading';
+import { apiQl } from '../../store/sagas';
 
 class BidHome extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            ad: null,
-            userProfile: null,
-            notification: {
-                status: '',
-                title: '',
-                message: '',
-                errors: {},
-            },
-        };
-    }
-
     componentDidMount() {
-        const { adId } = this.props;
-        this.getAd(adId);
-        this.setProfile();
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const { userProfile } = this.props;
-        if (!prevState.ad && this.state.ad) {
-            const { ad } = this.state;
-            if (userProfile && ad) {
-                if (ad.user.id === userProfile.id) {
-                    this.setState({
-                        notification: {
-                            status: 'ok_and_dismiss',
-                            title: 'Not allowed',
-                            message: 'You cannot bid on your own ad',
-                            errors: {},
-                        },
-                    });
-                }
-            }
-        }
-        if (!prevProps.dataGetAd && this.props.dataGetAd) {
-            this.setState({
-                ad: this.props.dataGetAd,
-            });
-        }
-        if (!prevProps.errorReq && this.props.errorReq) {
-            this.setState({
-                notification: {
-                    status: 'ok_and_dismiss',
-                    title: 'Error',
-                    message: 'Please correct below',
-                    errors: this.props.errorReq,
-                },
-            });
-        }
-        if (prevProps.userProfile !== userProfile) {
+        console.log('BID PROPS', this.props);
+        const { isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated();
+        } else { 
             this.setProfile();
         }
     }
 
-    getAd = (adId) => {
-        localforage.getItem('ads').then((value) => {
-            if (value) {
-                const ad = value.filter((ad1) => {
-                    return ad1.node._id === parseInt(adId, 10);
-                });
-                if (ad.length === 1) {
-                    this.setState({
-                        ad: ad[0].node,
-                    });
-                } else {
-                    this.props.actionGetAd(adId);
-                }
-            } else {
-                this.props.actionGetAd(adId);
-            }
-        }).catch(() => {
-            this.props.actionGetAd(adId);
-        });
-    };
-
     setProfile = () => {
         const { userProfile, cookies } = this.props;
         if (cookies.get('userId')) {
-            if (userProfile) {
-                this.setState({ userProfile });
-            } else {
-                localforage.getItem('userProfile').then((value) => {
-                    if (value) {
-                        this.setState({ userProfile: value });
-                    } else {
-                        this.props.actionGetUserProfile(cookies.get('userId'));
-                    }
-                });
+            if (!userProfile) {
+                this.props.actionGetUserProfile(cookies.get('userId'));
             }
-        }
-    }
-
-    handleNotificationDismiss = () => {
-        const { notification: { title } } = this.state;
-        this.setState({
-            notification: {
-                status: '',
-                title: '',
-                message: '',
-                errors: {},
-            },
-        });
-        if (title === 'Not allowed') {
-            this.props.router.push('/search');
+        } else {
+            this.handleNotAuthenticated();
         }
     }
 
     render() {
-        const { ad } = this.state;
         const {
-            isLoading,
+            ad,
             router,
+            userProfile,
+            isAuth: { isAuthenticated},
         } = this.props;
-        const { userProfile } = this.state;
+        if (!isAuthenticated) {
+            return null;
+        }
+        if (!ad) {return null;}
+        if (Object.keys(ad).length === 0) {
+            return <NotifierInline isNotClosable message="Sorry, this ad is no longer available." />
+        }
+
         return (
-            <>
-                <main>
-                    {!ad || isLoading ? <Loading /> : null}
-                    {ad ? (
-                        <>
-                            <AdDetails ad={ad} isAction={false} />
-                            <BidForm
-                                ad={ad}
-                                userProfile={userProfile}
-                                router={router}
-                            />
-                        </>
-                    ) : null}
-                    <NotifierDialog
-                        notification={this.state.notification}
-                        handleNotificationDismiss={
-                            this.handleNotificationDismiss
-                        }
-                    />
-                </main>
-            </>
+            <main>
+                <AdDetails ad={ad} isAction={false} />
+                { userProfile ? 
+                    (
+                        <BidForm
+                            ad={ad}
+                            userProfile={userProfile}
+                            router={router}
+                        />
+                    )
+                    : <Loading />}
+            </main>
         );
     }
 }
 
 BidHome.propTypes = {
     cookies: PropTypes.instanceOf(Cookies).isRequired,
-    adId: PropTypes.string.isRequired,
-    actionGetAd: PropTypes.func.isRequired,
+    ad: PropTypes.any,
     actionGetUserProfile: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    dataGetAd: PropTypes.any,
-    errorReq: PropTypes.any,
     userProfile: PropTypes.any,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
     return {
-        dataGetAd: state.ad.dataGetAd,
-        isLoading: state.ad.isLoadingAd,
-        errorReq: state.ad.errorReq,
         userProfile: state.auth.userProfile,
     };
 };
@@ -180,7 +85,6 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
-            actionGetAd,
             actionGetUserProfile,
         },
         dispatch,
@@ -192,12 +96,78 @@ export default withCookies(connect(
     mapDispatchToProps,
 )(withRouter(BidHome)));
 
-export async function getServerSideProps() {
-    let categories = await getCategories();
-    categories = categories.data.categories;
+const queryQl = `query getAd($id: ID!, $isDeleted: Boolean){
+    ad(id: $id) {
+        id
+        _id
+        createdAt
+        description
+        budget
+        budgetType
+        rentTime
+        isActive
+        bids(
+            isDeleted: $isDeleted
+            _order: {message_sentAt: "DESC"}
+        ){
+            id
+            isDeleted
+            bidder{
+                _id
+                id
+                username
+            }
+            bidType
+            bid
+            message{
+                id
+                _id
+                subject
+                message
+                sentAt
+            }
+        }
+        user {
+            id
+            username
+            image{
+                filename
+            }
+            address{
+                city
+            }
+        }
+        category {
+            id
+            title
+            parent{
+                title
+            }
+            root{
+                title
+            }
+        }
+    }
+}`;
+
+export async function getServerSideProps(context) {
+    const categories = await getCategories();
+    let ad = null;
+    const isAuth = handleCheckAuthentication(context);
+    if (isAuth.isAuthenticated){
+        const { params: { adId } } = context;
+        const variables = {
+            id: `/api/ads/${adId}`,
+            isDeleted: false,
+        };
+        const data = await apiQl(queryQl, variables, false);
+        ad = data.data.ad;
+    }
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth,
+            ad
         },
     };
 }

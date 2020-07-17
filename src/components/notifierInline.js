@@ -19,6 +19,8 @@ const styles = (theme) => ({
     },
     notifier: {
         marginBottom: '30px',
+        maxWidth: '500px',
+        margin: '0 auto',
     },
 });
 

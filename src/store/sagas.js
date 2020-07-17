@@ -231,9 +231,11 @@ const api = (
     });
 };
 
-const apiQl = (data, variables = null) => {
+export const apiQl = (data, variables = null, isForage = true) => {
     // update last active on indexeddb
-    localforage.setItem('lastActiveAt', Now());
+    if (isForage) {
+        localforage.setItem('lastActiveAt', Now());
+    }
     return axios.post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
         query: data,
         variables,

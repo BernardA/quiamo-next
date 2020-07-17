@@ -331,10 +331,14 @@ export function urlWriter(string) {
     ); 
 };
 
-export function handlePrivateRoute(context) {
+// checks auth on server
+// could be done on the client with withCookies
+// but some pages need info to avoid unnecessary queries
+export function handleCheckAuthentication(context) {
     const {
-        req: { headers, url },
-        res,
+        // req: { headers, url },
+        req: { headers }
+        // res,
     } = context;
     const cookies = {};
     if (headers && headers.cookie) {
@@ -345,6 +349,7 @@ export function handlePrivateRoute(context) {
     }
     const isAuthenticated = !!cookies.username;
     const isAdmin = !!cookies.isAdmin;
+    /* not using as causes re-render
     if (!isAuthenticated) {
         res.setHeader('Location', `/login?from=${url}`);
         res.statusCode = 307;
@@ -353,5 +358,17 @@ export function handlePrivateRoute(context) {
         res.setHeader('Location', '/');
         res.statusCode = 307;
     }
+    */
+    return { isAuthenticated, isAdmin };
+}
+
+export function handleIsNotAuthenticated(router) {
+    router.push({
+        pathname: '/login',
+        query: {
+            href: router.pathname,
+            as: router.asPath,
+        }
+    })
 }
 

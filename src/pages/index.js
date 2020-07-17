@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import axios from 'axios';
 import { withStyles } from "@material-ui/core/styles";
 import {
     Card,
@@ -15,6 +14,7 @@ import getCategories from '../lib/getCategories';
 import RecentAds from "../components/recentAds";
 import AdInsert from "../components/adInsert";
 import Concept from "../components/concept";
+import { apiQl } from '../store/sagas';
 
 const styles = (theme) => ({
     adForm: {
@@ -158,23 +158,11 @@ const queryQl = `query homePage {
     }
 }`;
 
-
-const apiQl = (data, variables = null) => {
-    return axios
-        .post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
-            query: data,
-            variables,
-        })
-        .then((response) => {
-            return response.data;
-        });
-};
-
 const variables = {};
 export async function getServerSideProps() {
     let categories = await getCategories();
     categories = categories.data.categories;
-    const data = await apiQl(queryQl, variables);
+    const data = await apiQl(queryQl, variables, false);
     return {
         props: {
             categories,

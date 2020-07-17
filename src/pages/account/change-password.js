@@ -30,7 +30,7 @@ import Breadcrumb from '../../components/breadcrumb';
 import { Loading } from '../../components/loading';
 import styles from '../../styles/login.module.scss';
 import getCategories from '../../lib/getCategories';
-import { handlePrivateRoute } from '../../tools/functions';
+import { handleIsNotAuthenticated, handleCheckAuthentication } from '../../tools/functions';
 
 // validation like maxLength(n) will cause errors as per https://github.com/erikras/redux-form/issues/4017#issuecomment-386788539
 // so get assignment of n off render as follows
@@ -50,6 +50,13 @@ class PasswordChangeForm extends React.Component {
                 errors: {},
             },
         };
+    }
+
+    componentDidMount() {
+        const { router, isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated(router);
+        } 
     }
 
     componentDidUpdate(prevProps) {
@@ -117,7 +124,11 @@ class PasswordChangeForm extends React.Component {
             reset,
             isLoading,
             plainPassword,
+            isAuth: { isAuthenticated },
         } = this.props;
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main>
                 {isLoading ? <Loading /> : null}
@@ -236,6 +247,7 @@ PasswordChangeForm.propTypes = {
     plainPassword: PropTypes.any,
     fields: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const selector = formValueSelector('passwordChangeForm');
@@ -273,12 +285,11 @@ export default PasswordChangeForm;
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

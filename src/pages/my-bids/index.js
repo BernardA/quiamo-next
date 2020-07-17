@@ -13,7 +13,7 @@ import BidList from '../../components/myBidsList';
 import { Loading } from '../../components/loading';
 import NotifierDialog from '../../components/notifierDialog';
 import getCategories from '../../lib/getCategories';
-import { handlePrivateRoute } from '../../tools/functions';
+import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../tools/functions';
 
 class MyBidsHome extends React.Component {
     constructor(props) {
@@ -31,7 +31,12 @@ class MyBidsHome extends React.Component {
     }
 
     componentDidMount() {
-        this.setProfile();
+        const { isAuth: { isAuthenticated } } = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated();
+        } else { 
+            this.setProfile();
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -116,11 +121,18 @@ class MyBidsHome extends React.Component {
         const {
             isLoadingProfile,
             isLoading,
+            isAuth: { isAuthenticated },
         } = this.props;
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main>
-                {(isLoadingProfile &&
-                    !userProfile) || !userProfile || isLoading ? <Loading /> : null}
+                {
+                    (isLoadingProfile && !userProfile) || !userProfile || isLoading ? <Loading /> 
+                        : 
+                        null
+                }
                 {
                     userProfile ? (
                         <BidList
@@ -147,6 +159,7 @@ MyBidsHome.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     dataPostBid: PropTypes.any,
     errorPostBid: PropTypes.any,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -174,12 +187,11 @@ export default withCookies(connect(
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }

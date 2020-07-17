@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'next/router';
@@ -18,6 +17,7 @@ import styles from '../../../../../styles/search.module.scss';
 import stylesPagination from '../../../../../styles/pagination.module.scss';
 import { actionGetAdsNext, actionGetAdsPrevious } from '../../../../../store/actions';
 import { ROOT_CATEGORIES } from '../../../../../parameters';
+import { apiQl } from '../../../../../store/sagas';
 
 class SearchCat extends React.Component {
     constructor(props) {
@@ -302,17 +302,6 @@ const queryQl = `
            }
        `;
 
-const apiQl = (data, variables = null) => {
-    return axios
-        .post(process.env.NEXT_PUBLIC_API_GRAPHQL_URL, {
-            query: data,
-            variables,
-        })
-        .then((response) => {
-            return response.data;
-        });
-};
-
 const validateParams = (params, categories) => {
     let is404 = false;
     const { city, rootCategory, parentCategory, category } = params;
@@ -459,7 +448,7 @@ export async function getStaticProps({ params }) {
                 categoryId: catObj[0].id,
             };
         }
-        const data = await apiQl(queryQl, variables);
+        const data = await apiQl(queryQl, variables, false);
         ads = data.data.ads;
     }
 

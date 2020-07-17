@@ -27,6 +27,7 @@ import {
     UPLOAD_MAX_SIZE,
     MESSAGE_ATTACHMENT_ACCEPTED_MIME_TYPES,
     MAX_ATTACHMENTS_ALLOWED,
+    ROOT_CATEGORIES,
 } from '../parameters';
 import { renderInput } from './formInputs';
 import RenderSelect from './formInputRenderSelect';
@@ -107,6 +108,7 @@ class BidInsertForm extends React.Component {
                     errors: {},
                 },
             });
+            // update user profile in store
             this.props.actionGetUserProfile(userProfile._id);
         }
         if (!prevProps.errorPostBid && errorPostBid) {
@@ -255,12 +257,12 @@ class BidInsertForm extends React.Component {
             errors[0].bidder === 'You have already bid for this ad'
         ) {
             // TODO fix state does not work with next
-            this.props.router.push(this.props.router.query.adViewPath);
+            this.props.router.push('/search');
         }
     }
 
     render() {
-        const main = process.env.ROOT_CATEGORIES.split(',');
+        const main = ROOT_CATEGORIES.split(',');
         const budgetTypes = [
             { value: '', label: 'Select' },
             { value: 'hour', label: 'per hour' },

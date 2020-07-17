@@ -273,10 +273,6 @@ class MessageForm extends React.Component {
     };
 
     handleNotificationDismiss = () => {
-        let isRedirectBackToAdView = false;
-        if (this.state.notification.title === 'Message to self is disabled') {
-            isRedirectBackToAdView = true;
-        }
         this.setState({
             notification: {
                 status: '',
@@ -285,10 +281,6 @@ class MessageForm extends React.Component {
                 errors: {},
             },
         });
-        // if message to ad is enabled, which is not the case
-        if (isRedirectBackToAdView) {
-            this.props.router.push(this.props.router.query.adViewPath);
-        }
     }
 
     render() {

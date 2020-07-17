@@ -18,7 +18,8 @@ import {
     image64toCanvasRef,
     base64StringtoFile,
     extractImageFileExtensionFromBase64,
-    handlePrivateRoute,
+    handleIsNotAuthenticated,
+    handleCheckAuthentication,
 } from '../../tools/functions';
 import {
     AVATAR_ACCEPTED_MIME_TYPES,
@@ -56,6 +57,13 @@ class ImageUploadForm extends React.Component {
                 errors: {},
             },
         };
+    }
+
+    componentDidMount() {
+        const { router, isAuth: { isAuthenticated }} = this.props;
+        if (!isAuthenticated) {
+            handleIsNotAuthenticated(router);
+        } 
     }
 
     componentDidUpdate(prevProps) {
@@ -199,8 +207,11 @@ class ImageUploadForm extends React.Component {
                 </li>
             );
         });
-        const { isLoading } = this.props;
+        const { isLoading, isAuth: { isAuthenticated } } = this.props;
 
+        if (!isAuthenticated) {
+            return null;
+        }
         return (
             <main>
                 {isLoading ? <Loading /> : null}
@@ -299,6 +310,7 @@ ImageUploadForm.propTypes = {
     actionGetUserProfile: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     router: PropTypes.object.isRequired,
+    isAuth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -332,12 +344,11 @@ export default reduxForm({
 
 export async function getServerSideProps(context) {
     // https://github.com/vercel/next.js/discussions/11281
-    let categories = await getCategories();
-    categories = categories.data.categories;
-    handlePrivateRoute(context);
+    const categories = await getCategories();
     return {
         props: {
-            categories,
+            categories: categories.data.categories,
+            isAuth: handleCheckAuthentication(context),
         },
     };
 }
