@@ -93,6 +93,11 @@ export const UPLOAD_USER_IMAGE_INIT = 'UPLOAD_USER_IMAGE_INIT';
 export const UPLOAD_USER_IMAGE_OK = 'UPLOAD_USER_IMAGE_OK';
 export const UPLOAD_USER_IMAGE_ERROR = 'UPLOAD_USER_IMAGE_ERROR';
 
+export const GET_RECENT_ADS = 'GET_RECENT_ADS';
+export const GET_RECENT_ADS_INIT = 'GET_RECENT_ADS_INIT';
+export const GET_RECENT_ADS_OK = 'GET_RECENT_ADS_OK';
+export const GET_RECENT_ADS_ERROR = 'GET_RECENT_ADS_ERROR';
+
 export const GET_ADS_NEXT = 'GET_ADS_NEXT';
 export const GET_ADS_NEXT_INIT = 'GET_ADS_NEXT_INIT';
 export const GET_ADS_NEXT_OK = 'GET_ADS_NEXT_OK';
@@ -380,6 +385,12 @@ export function actionUploadUserImage(file) {
     return {
         type: UPLOAD_USER_IMAGE,
         file,
+    };
+}
+
+export function actionGetRecentAds() {
+    return {
+        type: GET_RECENT_ADS,
     };
 }
 

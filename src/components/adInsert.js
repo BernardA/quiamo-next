@@ -10,6 +10,27 @@ import { Loading } from './loading';
 import {
     actionPostAd,
 } from '../store/actions';
+import { LANG } from '../parameters';
+
+const trans = {
+    br: {
+        adIsPublished: 'Seu anuncio foi publicado',
+        viewOrContinue: 'Veja seu anuncio ou continue a navegar',
+        adIsRegistered: 'Seu anuncio foi registrado',
+        loginOrRegistrationRequired: 'Agora precisa se conectar ou se cadastrar para que o anuncio seja publicado',
+        somethingWentWrong: 'Algo deu errado...',
+        pleaseReview: 'Favor verificar o seguinte:'
+
+    },
+    en: {
+        adIsPublished: 'Your ad is published',
+        viewOrContinue: 'View your ad or continue your navigation',
+        adIsRegistered: 'Your ad is registered',
+        loginOrRegistrationRequired: 'Login or registration is required for publication',
+        somethingWentWrong: 'Something went wrong...',
+        pleaseReview: 'Please review the following:'
+    }
+}
 
 class Ad extends React.Component {
     constructor(props) {
@@ -46,8 +67,8 @@ class Ad extends React.Component {
                     isClearForm: true,
                     notification: {
                         status: 'post_insert_ad_logged_in',
-                        title: 'Your ad is published!',
-                        message: 'View your ad or continue your navigation',
+                        title: `${trans[LANG].adIsPublished}!`,
+                        message: trans[LANG].viewOrContinue,
                         errors: {},
                     },
                 });
@@ -57,8 +78,8 @@ class Ad extends React.Component {
                     isClearForm: true,
                     notification: {
                         status: 'post_insert_ad_register',
-                        title: 'Your ad is registered!',
-                        message: 'Login or registration is required for publication.',
+                        title: trans[LANG].adIsRegistered,
+                        message: trans[LANG].loginOrRegistrationRequired,
                         errors: {},
                     },
                 });
@@ -69,8 +90,8 @@ class Ad extends React.Component {
                 isClearForm: false,
                 notification: {
                     status: 'error',
-                    title: 'Something went wrong...',
-                    message: 'Please review the following:',
+                    title: trans[LANG].somethingWentWrong,
+                    message: trans[LANG].pleaseReview,
                     errors: errorReq,
                 },
             });

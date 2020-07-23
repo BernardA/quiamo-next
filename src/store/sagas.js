@@ -81,6 +81,10 @@ import {
     UPLOAD_USER_IMAGE_INIT,
     UPLOAD_USER_IMAGE_OK,
     UPLOAD_USER_IMAGE_ERROR,
+    GET_RECENT_ADS,
+    GET_RECENT_ADS_INIT,
+    GET_RECENT_ADS_OK,
+    GET_RECENT_ADS_ERROR,
     GET_ADS_NEXT,
     GET_ADS_NEXT_INIT,
     GET_ADS_NEXT_OK,
@@ -1357,6 +1361,95 @@ function* uploadUserImage(action) {
             type: UPLOAD_USER_IMAGE_ERROR,
             data,
         });
+    }
+}
+
+function* getRecentAds() {
+    const queryQl = `query recentAds {
+    ads(
+        isActive: true
+        isDeleted: false
+        first: 3
+        after: null
+        _order: {createdAt: "DESC"}
+    ) {
+        edges {
+            node {
+                id
+                _id
+                createdAt
+                isActive
+                isDeleted
+                description
+                rentTime
+                budgetType
+                budget
+                user {
+                    id
+                    username
+                    image {
+                        filename
+                    }
+                    address {
+                        city
+                    }
+                }
+                category {
+                    id
+                    title
+                    parent {
+                        title
+                    }
+                    root {
+                        title
+                    }
+                }
+                budget
+            }
+        }
+        totalCount
+    }
+}`;
+    const variables = {};
+
+    try {
+        yield put({
+            type: GET_RECENT_ADS_INIT,
+        });
+
+        const data = yield call(apiQl, queryQl, variables);
+        if (data.errors) {
+            const errors = errorParserGraphql(data.errors);
+            if (errors === 'token expired') {
+                yield put({
+                    type: LOGOUT_TOKEN_EXPIRED,
+                });
+            } else {
+                yield put({
+                    type: GET_RECENT_ADS_ERROR,
+                    data: errors,
+                });
+            }
+        } else {
+            yield put({
+                type: GET_RECENT_ADS_OK,
+                data: data.data.ads,
+            });
+        }
+    } catch (error) {
+        const isOffline = !!(error.response === undefined || error.code === 'ECONNABORTED');
+        if (isOffline) {
+            // check if offline event already fired
+            localforage.getItem('offline-event-fired').then((value) => {
+                if (value === null) {
+                    localforage.setItem('offline-event-fired', true);
+                }
+            });
+            yield put({
+                type: CHECK_ONLINE_STATUS_ERROR,
+                isOnline: false,
+            });
+        }
     }
 }
 
@@ -3851,6 +3944,7 @@ export default function* () {
         takeLatest(POST_AD, postAd),
         takeLatest(PUT_USER_TO_AD, putUserToAd),
         takeLatest(UPLOAD_USER_IMAGE, uploadUserImage),
+        takeLatest(GET_RECENT_ADS, getRecentAds),
         takeLatest(GET_ADS_NEXT, getAdsNext),
         takeLatest(GET_ADS_PREVIOUS, getAdsPrevious),
         takeLatest(GET_AD, getAd),

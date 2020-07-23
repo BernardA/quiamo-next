@@ -18,6 +18,7 @@ export const CACHE_DATE = '290519';
 export const TIMEZONE = 'America/Sao Paulo';
 export const LOCALE = 'pt-BR';
 export const CURRENCY = 'BRL';
+export const LANG = 'br';
 
 export const ONLINE_CHECK_INTERVAL = 300000; // milliseconds
 export const TOKEN_TTL = 1800; // seconds

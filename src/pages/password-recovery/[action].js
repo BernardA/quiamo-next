@@ -1,23 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Router from 'next/router';
 import PropTypes from 'prop-types';
-import { Loading } from '../components/loading';
-import PasswordRecoveryRequestForm from '../components/passwordRecoveryRequestForm';
-import PasswordRecoveryResetForm from '../components/passwordRecoveryResetForm';
-import NotifierInline from '../components/notifierInline';
+import { Loading } from '../../components/loading';
+import PasswordRecoveryRequestForm from '../../components/passwordRecoveryRequestForm';
+import PasswordRecoveryResetForm from '../../components/passwordRecoveryResetForm';
+import NotifierInline from '../../components/notifierInline';
 import {
     actionPostUserConfirm,
     actionPostPasswordRecoveryRequest,
     actionPostPasswordRecoveryReset,
-} from '../store/actions';
-import styles from '../styles/passwordRecovery.module.scss';
-import getCategories from '../lib/getCategories';
+} from '../../store/actions';
+import styles from '../../styles/passwordRecovery.module.scss';
+import getCategories from '../../lib/getCategories';
 
 
 class PasswordRecovery extends React.Component {
@@ -31,15 +31,15 @@ class PasswordRecovery extends React.Component {
     }
 
     componentDidMount() {
-        const { router } = this.props;
-        if (router.pathname === '/password-recovery') {
+        const { router: { query : { action }} } = this.props;
+        if (action === 'request') {
             this.setState({
-                action: 'request',
+                action,
                 message: 'Please enter your email address',
             });
         } else {
             this.setState({ action: 'confirm' });
-            const token = Router.replace('/password-recovery/');
+            const token = action;
             // check if token length === 30
             if (token.length !== 30) {
                 this.setState({
@@ -215,9 +215,9 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(PasswordRecovery);
+)(withRouter(PasswordRecovery));
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     let categories = await getCategories();
     categories = categories.data.categories;
     return {

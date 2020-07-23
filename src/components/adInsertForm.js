@@ -14,7 +14,50 @@ import { renderInput, renderRadio } from './formInputs';
 import RenderSelect from './formInputRenderSelect';
 import AutocompleteGrouped from './formInputAutocompleteGrouped';
 import { LoadingVisibility } from './loading';
-import { ROOT_CATEGORIES } from '../parameters';
+import { ROOT_CATEGORIES, LANG } from '../parameters';
+
+const trans = {
+    br: {
+        select: 'Selecione',
+        perHour: 'por hora',
+        perDay: 'por dia',
+        global: 'global',
+        quote: 'cotacao',
+        free: 'gratuito',
+        donation: 'doacao',
+        loan: 'emprestimo',
+        category: 'Categoria',
+        description: 'Descricao',
+        buy: 'Comprar',
+        rent: 'Alugar',
+        budgetType: 'Tipo de orcamento',
+        rentTimeDays: 'Dias de aluguel',
+        budget: 'Orcamento',
+        budgetDay: 'Orcamento diario',
+        submit: 'Enviar',
+        clear: 'Apagar',
+    },
+    en: {
+        select: 'Select',
+        perHour: 'per hour',
+        perDay: 'per day',
+        global: 'global',
+        quote: 'quote',
+        free: 'free',
+        donation: 'donation',
+        loan: 'on loan',
+        category: 'Category',
+        description: 'Description',
+        buy: 'Buy',
+        rent: 'Rent',
+        budgetType: 'Budget type',
+        rentTimeDays: 'Rent time in days',
+        budget: 'Budget',
+        budgetDay: 'Budget/day',
+        submit: 'Submit',
+        clear: 'Clear',
+    }
+}
 
 const minValue0 = minValue(0);
 const minValue1 = minValue(1);
@@ -75,24 +118,24 @@ class AdInsertForm extends React.Component {
     handleSetBudgetTypeSelect = () => {
         const { buyOrRent } = this.props;
         const budgetTypesService = [
-            { value: '', label: 'Select' },
-            { value: 'hour', label: 'per hour' },
-            { value: 'day', label: 'per day' },
-            { value: 'global', label: 'global' },
-            { value: 'quote', label: 'quote' },
-            { value: 'free', label: 'free' },
+            { value: '', label: trans[LANG].select },
+            { value: 'hour', label: trans[LANG].perHour },
+            { value: 'day', label: trans[LANG].perDay },
+            { value: 'global', label: trans[LANG].global },
+            { value: 'quote', label: trans[LANG].quote },
+            { value: 'free', label: trans[LANG].free },
         ];
         const budgetTypesProductBuy = [
-            { value: '', label: 'Select' },
-            { value: 'global', label: 'global' },
-            { value: 'quote', label: 'quote' },
-            { value: 'free', label: 'donation' },
+            { value: '', label: trans[LANG].select },
+            { value: 'global', label: trans[LANG].global },
+            { value: 'quote', label: trans[LANG].quote },
+            { value: 'free', label: trans[LANG].donation },
         ];
         const budgetTypesProductRent = [
-            { value: '', label: 'Select' },
-            { value: 'hour', label: 'per hour' },
-            { value: 'day', label: 'per day' },
-            { value: 'free', label: 'loan' },
+            { value: '', label: trans[LANG].select },
+            { value: 'hour', label: trans[LANG].perHour },
+            { value: 'day', label: trans[LANG].perDay },
+            { value: 'free', label: trans[LANG].loan },
         ];
         let types = budgetTypesService;
         if (buyOrRent && buyOrRent === 'rent') {
@@ -156,7 +199,7 @@ class AdInsertForm extends React.Component {
                         id="category"
                         type="text"
                         variant="outlined"
-                        label="Category"
+                        label={trans[LANG].category}
                         selectedTypeRadio={adType}
                         categories={categories}
                         component={AutocompleteGrouped}
@@ -169,7 +212,7 @@ class AdInsertForm extends React.Component {
                     <Field
                         name="description"
                         id="description"
-                        label="Description"
+                        label={trans[LANG].description}
                         onFocus={
                             () => { document.getElementById('description_indication').style.display = 'block'; }
                         }
@@ -195,8 +238,8 @@ class AdInsertForm extends React.Component {
                             component={renderRadio}
                             validate={[required]}
                             options={[
-                                { title: 'Buy', id: 'buy', value: 'buy' },
-                                { title: 'Rent', id: 'rent', value: 'rent' },
+                                { title: trans[LANG].buy, id: 'buy', value: 'buy' },
+                                { title: trans[LANG].rent, id: 'rent', value: 'rent' },
                             ]}
                         />
                     </div>
@@ -209,7 +252,7 @@ class AdInsertForm extends React.Component {
                         validate={[required]}
                         component={RenderSelect}
                         variant="outlined"
-                        label="Budget type"
+                        label={trans[LANG].budgetType}
                     >
                         {this.handleSetBudgetTypeSelect()}
                     </Field>
@@ -221,7 +264,7 @@ class AdInsertForm extends React.Component {
                             type="number"
                             id="rent_time"
                             validate={[required, minValue1]}
-                            label="Rent time in days"
+                            label={trans[LANG].rentTimeDays}
                             component={renderInput}
                             variant="outlined"
                         />
@@ -235,7 +278,7 @@ class AdInsertForm extends React.Component {
                                 name="budget"
                                 type="number"
                                 id="budget"
-                                label="Budget"
+                                label={trans[LANG].budget}
                                 component={renderInput}
                                 validate={[isNumber, minValue0, required]}
                                 variant="outlined"
@@ -249,7 +292,7 @@ class AdInsertForm extends React.Component {
                             name="budget"
                             type="number"
                             id="budget"
-                            label="Budget/day"
+                            label={trans[LANG].budgetDay}
                             component={renderInput}
                             validate={[isNumber, minValue0, required]}
                             variant="outlined"
@@ -267,7 +310,7 @@ class AdInsertForm extends React.Component {
                             type="submit"
                             disabled={submitting || invalid}
                         >
-                            Submit
+                            {trans[LANG].submit}
                         </Button>
                         <Button
                             disabled={pristine || submitting}
@@ -275,7 +318,7 @@ class AdInsertForm extends React.Component {
                             variant="outlined"
                             color="primary"
                         >
-                            Clear
+                            {trans[LANG].clear}
                         </Button>
                     </FormGroup>
                 </div>

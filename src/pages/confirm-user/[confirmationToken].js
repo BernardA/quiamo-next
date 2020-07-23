@@ -9,11 +9,11 @@ import {
     Typography,
 } from '@material-ui/core/';
 import PropTypes from 'prop-types';
-import { actionPostUserConfirm } from '../store/actions';
-import { Loading } from '../components/loading';
-import NotifierInline from '../components/notifierInline';
-import styles from '../styles/passwordRecovery.module.scss';
-import getCategories from '../lib/getCategories';
+import { actionPostUserConfirm } from '../../store/actions';
+import { Loading } from '../../components/loading';
+import NotifierInline from '../../components/notifierInline';
+import styles from '../../styles/passwordRecovery.module.scss';
+import getCategories from '../../lib/getCategories';
 
 
 class ConfirmUser extends React.Component {
@@ -25,7 +25,8 @@ class ConfirmUser extends React.Component {
     }
 
     componentDidMount() {
-        const token = this.props.router.pathname.replace('/confirm-user/', '');
+        console.log('CONFIRM-USER', this.props);
+        const token = this.props.router.query.confirmationToken;
         if (token) {
             this.setState({ confirmationToken: token });
             this.props.actionPostUserConfirm(token);
@@ -64,18 +65,21 @@ class ConfirmUser extends React.Component {
                             {errorConfirmation ? (
                                 <NotifierInline
                                     message="Expired or invalid token"
+                                    severity="danger"
                                     isNotClosable
                                 />
                             ) : null}
                             {!confirmationToken ? (
                                 <NotifierInline
                                     message="Missing information token"
+                                    severity="danger"
                                     isNotClosable
                                 />
                             ) : null}
                             {dataConfirmation ? (
                                 <NotifierInline
                                     message="Registration complete. You will be redirected to login"
+                                    severity="success"
                                     isNotClosable
                                 />
                             ) : null}

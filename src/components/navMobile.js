@@ -11,7 +11,16 @@ import Link from './link';
 import styles from '../styles/nav.module.scss';
 import NavMobileDrawer from './navMobileDrawer';
 import usePrevious from '../tools/hooks/usePrevious';
-import { ROOT_CATEGORIES } from '../parameters';
+import { ROOT_CATEGORIES,LANG } from '../parameters';
+
+const trans = {
+    br: {
+        search: 'Busca',
+    },
+    en: {
+        search: 'Search',
+    }
+}
 
 const NavMobile = (props) => {
     const { cookies, categories, router } = props;
@@ -58,7 +67,7 @@ const NavMobile = (props) => {
                 <Link href="/">Home</Link>
             </ListItem>
             <ListItem id="/search" className="activable">
-                <Link href="/search">Search</Link>
+                <Link href="/search">{trans[LANG].search}</Link>
             </ListItem>
             { !router.isFallback ? 
                 (

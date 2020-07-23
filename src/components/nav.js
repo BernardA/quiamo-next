@@ -7,7 +7,16 @@ import Link from './link';
 import styles from '../styles/nav.module.scss';
 import NavDrawer from './navDrawer';
 import usePrevious from '../tools/hooks/usePrevious';
-import { ROOT_CATEGORIES } from '../parameters';
+import { ROOT_CATEGORIES, LANG } from '../parameters';
+
+const trans = {
+    br: {
+        search: 'Busca',
+    },
+    en: {
+        search: 'Search',
+    }
+}
 
 const Nav = (props) => {
     const { cookies, categories, router } = props;
@@ -41,7 +50,7 @@ const Nav = (props) => {
                 <Link href="/">Home</Link>
             </MenuItem>
             <MenuItem disableGutters>
-                <Link href="/search">Search</Link>
+                <Link href="/search">{trans[LANG].search}</Link>
             </MenuItem>
             { !router.isFallback ? 
                 (

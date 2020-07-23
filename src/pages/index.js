@@ -1,4 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withStyles } from "@material-ui/core/styles";
 import {
     Card,
@@ -15,6 +18,20 @@ import RecentAds from "../components/recentAds";
 import AdInsert from "../components/adInsert";
 import Concept from "../components/concept";
 import { apiQl } from '../store/sagas';
+import { LANG } from '../parameters';
+import { actionGetRecentAds } from '../store/actions';
+import usePrevious from '../tools/hooks/usePrevious';
+
+const trans = {
+    br: {
+        whatDoYouNeed: 'Do que voce precisa',
+        recentAds: 'Anuncios recentes',
+    },
+    en: {
+        whatDoYouNeed: 'What do you need',
+        recentAds: 'Recent ads',
+    }
+}
 
 const styles = (theme) => ({
     adForm: {
@@ -72,10 +89,24 @@ const styles = (theme) => ({
 const Home = (props) => {
     const {
         categories,
-        ads,
         classes,
+        dataRecentAds,
     } = props;
+    console.log('HOME PROPS', props);
+    const [ads, setAds] = useState(props.ads);
+    const prevDataRecentAds = usePrevious(dataRecentAds);
     // React.useEffect(() => localforage.setItem('categories', categories), []);
+    useEffect(() => {
+        props.actionGetRecentAds();
+    },[])
+    useEffect(() => {
+        if (dataRecentAds) {
+            if (!prevDataRecentAds || prevDataRecentAds !== dataRecentAds) {
+                console.log('dataRecentAds', dataRecentAds);
+                setAds(dataRecentAds);
+            }
+        }
+    },[dataRecentAds])
     return (
         <div className="container">
             <Head>
@@ -90,7 +121,7 @@ const Home = (props) => {
                                 <AppBar className={classes.appbarRoot}>
                                     <Toolbar>
                                         <Typography className={classes.title}>
-                                            What do you need?
+                                            {`${trans[LANG].whatDoYouNeed}?`}
                                         </Typography>
                                     </Toolbar>
                                 </AppBar>
@@ -102,7 +133,7 @@ const Home = (props) => {
                     </Card>
                     <div>
                         <Typography className={classes.header}>
-                            Recent ads
+                            {trans[LANG].recentAds}
                         </Typography>
                         <RecentAds ads={ads} />
                     </div>
@@ -113,12 +144,40 @@ const Home = (props) => {
     );
 }
 
+Home.propTypes = {
+    actionGetRecentAds: PropTypes.func.isRequired,
+    dataRecentAds: PropTypes.any,
+    classes: PropTypes.object.isRequired,
+    categories: PropTypes.array.isRequired,
+    ads: PropTypes.shape({
+        edges: PropTypes.array.isRequired,
+    }).isRequired,
+};
+
+const mapStateToProps = (state) => {
+    return {
+        dataRecentAds: state.ad.dataRecentAds,
+    };
+};
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(
+        {
+            actionGetRecentAds,
+        },
+        dispatch,
+    );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Home));
+
 const queryQl = `query homePage {
     ads(
         isActive: true
         isDeleted: false
         first: 3
         after: null
+        _order: {createdAt: "DESC"}
     ) {
         edges {
             node {
@@ -171,14 +230,5 @@ export async function getServerSideProps() {
     }
 }
 
-Home.propTypes = {
-    classes: PropTypes.object.isRequired,
-    categories: PropTypes.array.isRequired,
-    ads: PropTypes.shape({
-        edges: PropTypes.array.isRequired,
-    }).isRequired,
-};
-
-export default withStyles(styles)(Home);
 
 

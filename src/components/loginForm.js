@@ -45,7 +45,7 @@ class LoginForm extends React.Component {
                 </div>
                 <div id="captcha" />
                 <div className={styles.forgotPassword}>
-                    <Link href="/password-recovery">forgot password?</Link>
+                    <Link href="/password-recovery/request">forgot password?</Link>
                 </div>
                 <Button
                     className={styles.button}

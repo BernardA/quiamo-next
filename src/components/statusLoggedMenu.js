@@ -8,6 +8,26 @@ import {
 import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import Link from './link';
+import { LANG } from '../parameters';
+
+const trans = {
+    br: {
+        welcome: 'Bem-vindo(a)',
+        account: 'Conta',
+        myAds: 'Meus anuncios',
+        myBids: 'Minhas ofertas',
+        mailbox: 'Caixa postal',
+        logout: 'Se desconectar',
+    },
+    en: {
+        welcome: 'Welcome',
+        account: 'Account',
+        myAds: 'My ads',
+        myBids: 'My bids',
+        mailbox: 'Mailbox',
+        logout: 'Log out',
+    }
+}
 
 
 // from https://material-ui.com/components/menus/
@@ -93,35 +113,35 @@ function StatusLoggedMenu(props) {
                 className={classes.menu}
             >
                 <StyledMenuItem className={classes.welcome}>
-                    <ListItemText secondary="Welcome" />
+                    <ListItemText secondary={trans[LANG].welcome} />
                 </StyledMenuItem>
                 <StyledMenuItem className={classes.welcome}>
                     <ListItemText secondary={props.username} />
                 </StyledMenuItem>
                 <Link href="/account" onClick={handleClose}>
                     <StyledMenuItem>
-                        <ListItemText primary="Account" />
+                        <ListItemText primary={trans[LANG].account} />
                     </StyledMenuItem>
                 </Link>
                 <Link href="/my-ads" onClick={handleClose}>
                     <StyledMenuItem>
-                        <ListItemText primary="My ads" />
+                        <ListItemText primary={trans[LANG].myAds} />
                     </StyledMenuItem>
                 </Link>
                 <Link href="/my-bids" onClick={handleClose}>
                     <StyledMenuItem>
-                        <ListItemText primary="My bids" />
+                        <ListItemText primary={trans[LANG].myBids} />
                     </StyledMenuItem>
                 </Link>
                 <Link href="/mailbox/[type]/[messageId]" as="/mailbox/inbox/0" onClick={handleClose}>
                     <StyledMenuItem>
-                        <ListItemText primary="Mailbox" />
+                        <ListItemText primary={trans[LANG].mailbox} />
                     </StyledMenuItem>
                 </Link>
                 <StyledMenuItem onClick={handleClose}>
                     <ListItemText
                         onClick={logoutAction}
-                        primary="Log out"
+                        primary={trans[LANG].logout}
                     />
                 </StyledMenuItem>
             </StyledMenu>

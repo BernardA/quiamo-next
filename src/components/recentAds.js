@@ -26,6 +26,7 @@ const styles = (theme) => ({
 
 const RecentAds = (props) => {
     const { ads, classes } = props;
+    console.log('RECENT ADS', ads);
     const adList = () => {
         const tags = ads.edges.map((ad) => {
             // if user has no img on profile, get placeholder img

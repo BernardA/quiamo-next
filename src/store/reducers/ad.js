@@ -6,6 +6,9 @@ import {
     PUT_USER_TO_AD_INIT,
     PUT_USER_TO_AD_OK,
     PUT_USER_TO_AD_ERROR,
+    GET_RECENT_ADS_INIT,
+    GET_RECENT_ADS_OK,
+    GET_RECENT_ADS_ERROR,
     GET_ADS_NEXT_INIT,
     GET_ADS_NEXT_OK,
     GET_ADS_NEXT_ERROR,
@@ -46,6 +49,8 @@ const initialState = {
     dataDeleteAd: null,
     dataToggleActiveAd: null,
     dataUserAds: null,
+    dataRecentAds: null,
+    errorRecentAds: null,
 };
 
 export default (state = initialState, action) => {
@@ -230,6 +235,22 @@ export default (state = initialState, action) => {
             ...state,
             isLoadingUserAds: false,
             errorReq: action.data,
+        };
+    case GET_RECENT_ADS_INIT:
+        return {
+            ...state,
+            errorRecentAds: null,
+            dataRecentAds: null,
+        };
+    case GET_RECENT_ADS_OK:
+        return {
+            ...state,
+            dataRecentAds: action.data,
+        };
+    case GET_RECENT_ADS_ERROR:
+        return {
+            ...state,
+            errorRecentAds: action.data,
         };
     default:
         return state;

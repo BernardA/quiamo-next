@@ -11,6 +11,38 @@ import {
 } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { LANG } from '../parameters';
+
+const trans = {
+    br: {
+        howItWorks: 'Como funciona',
+        needSomething: 'Precisando de alguma coisa',
+        waitContactFromNeighbors: 'Espero resposta dum vizinho',
+        exchangeWithNeighbors: 'Troque uma ideia com os vizinhos',
+        chooseBestOffer: 'Escolha a melhor oferta',
+        enjoy: 'Aproveite',
+        willingToHelp: 'Disposto a ajudar',
+        searchAds: 'Procure um anuncio',
+        makeYourOffer: 'Faca uma proposta',
+        waitResponse: 'Espere um retorno',
+        exchangeWithNeighbor: 'Negocie com o interessado',
+        happyToHelp: 'Contente de ajudar!',
+    },
+    en: {
+        howItWorks: 'How it works',
+        needSomething: 'Need something',
+        waitContactFromNeighbors: 'Wait contact from neighbors',
+        exchangeWithNeighbors: 'Exchange with neighbors',
+        chooseBestOffer: 'Choose the best offer',
+        enjoy: 'Enjoy',
+        willingToHelp: 'Willing to help',
+        searchAds: 'Search ads',
+        makeYourOffer: 'Make your offer',
+        waitResponse: 'Wait response',
+        exchangeWithNeighbor: 'Exchange with neighbor',
+        happyToHelp: 'Happy to help!'
+    }
+}
 
 const styles = () => ({
     root: {
@@ -59,68 +91,68 @@ const Concept = (props) => {
         <div className={classes.root}>
             <div>
                 <Typography className={classes.header}>
-                    How it works
+                    {trans[LANG].howItWorks}
                 </Typography>
             </div>
             <div className={classes.scroller}>
                 <div className={classes.conceptImg}>
                     <div>
                         <Typography className={classes.subHeader}>
-                            Need something?
+                            {`${trans[LANG].needSomething}?`}
                         </Typography>
                     </div>
                     <div>
                         <Create />
-                        <Typography>Create you ad</Typography>
+                        <Typography>{trans[LANG].createYourAd}</Typography>
                     </div>
                     <div>
                         <HourglassEmptyOutlined />
                         <Typography>
-                            Wait contact from neighbors
+                            {trans[LANG].waitContactFromNeighbors}
                         </Typography>
                     </div>
                     <div>
                         <CompareArrowsOutlined />
                         <Typography>
-                            Exchange with neighbors
+                            {trans[LANG].exchangeWithNeighbors}
                         </Typography>
                     </div>
                     <div>
                         <GavelOutlined />
-                        <Typography>Choose best offer</Typography>
+                        <Typography>{trans[LANG].chooseBestOffer}</Typography>
                     </div>
                     <div>
                         <MoodRounded />
-                        <Typography>Enjoy</Typography>
+                        <Typography>{`${trans[LANG].enjoy}!`}</Typography>
                     </div>
                 </div>
                 <div className={classes.conceptImg}>
                     <div>
                         <Typography className={classes.subHeader}>
-                            Willing to help?
+                            {`${trans[LANG].willingToHelp}?`}
                         </Typography>
                     </div>
                     <div>
                         <SearchRounded />
-                        <Typography>Search ads</Typography>
+                        <Typography>{trans[LANG].searchAds}</Typography>
                     </div>
                     <div>
                         <MessageRounded />
-                        <Typography>Make your offer</Typography>
+                        <Typography>{trans[LANG].makeYourOffer}</Typography>
                     </div>
                     <div>
                         <HourglassEmptyOutlined />
-                        <Typography>Wait contact</Typography>
+                        <Typography>{trans[LANG].waitResponse}</Typography>
                     </div>
                     <div>
                         <CompareArrowsOutlined />
                         <Typography>
-                            Exchange with neighbor
+                            {trans[LANG].exchangeWithNeighbor}
                         </Typography>
                     </div>
                     <div>
                         <MoodRounded />
-                        <Typography>Happy to help</Typography>
+                        <Typography>{trans[LANG].happyToHelp}</Typography>
                     </div>
                 </div>
             </div>
