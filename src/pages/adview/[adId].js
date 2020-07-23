@@ -10,7 +10,6 @@ import NotifierInline from '../../components/notifierInline';
 import { apiQl } from '../../store/sagas';
 
 const Adview = (props) => {
-    console.log('ADVIEW', props);
     const { userProfile, ad } = props;
     if (!ad) {
         return (

@@ -18,7 +18,7 @@ const trans = {
         viewOrContinue: 'Veja seu anuncio ou continue a navegar',
         adIsRegistered: 'Seu anuncio foi registrado',
         loginOrRegistrationRequired: 'Agora precisa se conectar ou se cadastrar para que o anuncio seja publicado',
-        somethingWentWrong: 'Algo deu errado...',
+        somethingWrong: 'Algo deu errado...',
         pleaseReview: 'Favor verificar o seguinte:'
 
     },
@@ -27,7 +27,7 @@ const trans = {
         viewOrContinue: 'View your ad or continue your navigation',
         adIsRegistered: 'Your ad is registered',
         loginOrRegistrationRequired: 'Login or registration is required for publication',
-        somethingWentWrong: 'Something went wrong...',
+        somethingWrong: 'Something went wrong...',
         pleaseReview: 'Please review the following:'
     }
 }
@@ -90,7 +90,7 @@ class Ad extends React.Component {
                 isClearForm: false,
                 notification: {
                     status: 'error',
-                    title: trans[LANG].somethingWentWrong,
+                    title: trans[LANG].somethingWrong,
                     message: trans[LANG].pleaseReview,
                     errors: errorReq,
                 },

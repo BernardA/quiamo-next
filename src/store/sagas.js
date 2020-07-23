@@ -3924,6 +3924,7 @@ function* getAdsGroupByCategory(action) {
 }
 */
 
+// eslint-disable-next-line func-names
 export default function* () {
     yield all([
         takeLatest(POST_LOGIN, postLogin),

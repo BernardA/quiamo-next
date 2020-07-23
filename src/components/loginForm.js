@@ -1,12 +1,26 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core/';
 import PropTypes from 'prop-types';
 import { required, isEmail, isSpace } from '../tools/validator';
 import { renderInput } from './formInputs';
 import RenderPassword from './formRenderPassword';
 import styles from '../styles/loginForm.module.scss';
 import Link from '../components/link';
+import { LANG } from '../parameters';
+
+const trans = {
+    br: {
+        password: 'Senha',
+        forgotPassword: 'esqueceu a senha',
+        connect: 'Entrar',
+    },
+    en: {
+        password: 'Password',
+        forgotPassword: 'forgot password',
+        connect: 'Connect',
+    }
+}
 
 class LoginForm extends React.Component {
     render() {
@@ -37,7 +51,7 @@ class LoginForm extends React.Component {
                 <div className="form_input">
                     <Field
                         name="password"
-                        label="Password"
+                        label={trans[LANG].password}
                         variant="outlined"
                         component={RenderPassword}
                         validate={[required, isSpace]}
@@ -45,7 +59,7 @@ class LoginForm extends React.Component {
                 </div>
                 <div id="captcha" />
                 <div className={styles.forgotPassword}>
-                    <Link href="/password-recovery/request">forgot password?</Link>
+                    <Link href="/password-recovery/request">{`${trans[LANG].forgotPassword}?`}</Link>
                 </div>
                 <Button
                     className={styles.button}
@@ -56,7 +70,7 @@ class LoginForm extends React.Component {
                     name="_submit"
                     type="submit"
                 >
-                    Connect
+                    {trans[LANG].connect}
                 </Button>
             </form>
         );

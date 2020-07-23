@@ -92,7 +92,6 @@ const Home = (props) => {
         classes,
         dataRecentAds,
     } = props;
-    console.log('HOME PROPS', props);
     const [ads, setAds] = useState(props.ads);
     const prevDataRecentAds = usePrevious(dataRecentAds);
     // React.useEffect(() => localforage.setItem('categories', categories), []);
@@ -102,7 +101,6 @@ const Home = (props) => {
     useEffect(() => {
         if (dataRecentAds) {
             if (!prevDataRecentAds || prevDataRecentAds !== dataRecentAds) {
-                console.log('dataRecentAds', dataRecentAds);
                 setAds(dataRecentAds);
             }
         }

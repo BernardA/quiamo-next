@@ -62,7 +62,6 @@ function AutocompleteGrouped(field) {
             options={options.sort((a, b) => `${a.category}${a.title}`.localeCompare(`${b.category}${b.title}`))}
             groupBy={(option) => option.category}
             getOptionLabel={(option) => option.title}
-            // onChange={(event, value) => console.log(value)}
             getOptionSelected={(option, value) => option.title === value.title}
             disabled={field.disabled}
             renderInput={(params) => (

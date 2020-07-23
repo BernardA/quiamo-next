@@ -19,7 +19,6 @@ import { handleCheckAuthentication, handleIsNotAuthenticated } from '../../../..
 const Viewer = (props) => {
     const router = useRouter();
     const { query: { fileName, type, messageId } } = router;
-    console.log('router', router);
     const { isAuth : { isAuthenticated }} = props;
     const [message, setMessage] = useState(null);
     useEffect(() => {

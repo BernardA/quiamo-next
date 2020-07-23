@@ -7,6 +7,7 @@ import {
     CardHeader,
     CardContent,
     Typography,
+    Button,
 } from '@material-ui/core/';
 import localforage from 'localforage';
 import PropTypes from 'prop-types';
@@ -23,6 +24,43 @@ import {
 } from '../store/actions';
 import styles from '../styles/login.module.scss';
 import Link from '../components/link';
+import { LANG } from '../parameters';
+
+const trans = {
+    br: {
+        refreshMomentarily: 'Esta pagina vai se recarregar em instantes',
+        adWasPublished: 'Seu anuncio foi publicado',
+        redirectedTo: 'Voce sera redirecionado para',
+        somethingWrong: 'Algo deu errado',
+        seemOffline: 'Parece que nao ha conexao',
+        logginNotPossible: 'Impossivel de se conectar',
+        googleFailure: 'Problema com Google login. Tente de novo',
+        login: 'Acessar sua conta',
+        requiresLogin: 'A pagina procurada necessita conexao',
+        notYetMember: 'Ainda nao tem conta',
+        signUp: 'Criar conta',
+        orWithEmail: 'ou com seu e-mail',
+        offlineLoginDisabled: 'Parece nao have conexao. Impossivel de se conectar',
+        registerFirst: 'Certifique-se que voce ja criou uma conta',
+    },
+    en: {
+        refreshMomentarily: 'This page will refresh momentarily',
+        adWasPublished: 'Your ad was published',
+        redirectedTo: 'You will be redirected to',
+        nowConnected: 'You are now connected',
+        somethingWrong: 'Something went wrong',
+        seemOffline: 'You seem to be offline',
+        logginNotPossible: 'Loggin in is not possible',
+        googleFailure: 'Google login failure. Please retry',
+        login: 'Login',
+        requiresLogin: 'The page you tried to access requires login',
+        notYetMember: 'Not yet a member',
+        signUp: 'Sign up',
+        orWithEmail: 'or with your email',
+        offlineLoginDisabled: 'You seem to be offline. Login is disabled',
+        registerFirst: 'Check that you have already registered'
+    }
+}
 
 class Login extends React.Component {
     constructor(props) {
@@ -39,7 +77,7 @@ class Login extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { isOnline, token, errorReq } = this.props;
+        const { isOnline, token, errorReq, errorSocialLogin } = this.props;
         if (prevProps.token !== token && token) {
             this.handlePostLoginOk();
         }
@@ -49,6 +87,16 @@ class Login extends React.Component {
         }
         if (prevProps.isOnline !== isOnline && !isOnline) {
             this.handlePostLoginOffline();
+        }
+        if (!prevProps.errorSocialLogin && errorSocialLogin) {
+            this.setState({
+                notification: {
+                    status: 'error',
+                    title: trans[LANG].somethingWrong,
+                    message: trans[LANG].registerFirst,
+                    errors: {},
+                },
+            });
         }
     }
 
@@ -92,11 +140,11 @@ class Login extends React.Component {
                 return (
                     <>
                         <Typography variant="subtitle2">
-                            This page will refresh momentarily.
+                            {trans[LANG].refreshMomentarily}
                         </Typography>
                         <Typography variant="subtitle2" gutterBottom>
-                            {isPendingAd ? 'Your ad was published. ' : null}
-                            {`You will be redirected to ${redirectAs}`}
+                            {isPendingAd ? trans[LANG].adWasPublished : null}
+                            {`${trans[LANG].redirectedTo} ${redirectAs}`}
                         </Typography>
                     </>
                 );
@@ -104,7 +152,7 @@ class Login extends React.Component {
             this.setState({
                 notification: {
                     status: 'ok',
-                    title: 'You are now connected.',
+                    title: trans[LANG].nowConnected,
                     message: message(),
                     errors: {},
                 },
@@ -121,7 +169,7 @@ class Login extends React.Component {
         this.setState({
             notification: {
                 status: 'error',
-                title: 'There was an error.',
+                title: trans[LANG].somethingWrong,
                 message: errorReq[0].message,
                 errors: {},
             },
@@ -139,8 +187,8 @@ class Login extends React.Component {
         this.setState({
             notification: {
                 status: 'ok_and_dismiss',
-                title: 'You seem to be offline.',
-                message: 'Loggin in is not possible',
+                title: trans[LANG].seemOffline,
+                message: trans[LANG].logginNotPossible,
                 errors: {},
             },
         });
@@ -151,8 +199,8 @@ class Login extends React.Component {
             isErrorSocialLogin: true,
             notification: {
                 status: 'error',
-                title: 'There was an error',
-                message: 'Google login failure. Please retry.',
+                title: trans[LANG].somethingWrong,
+                message: trans[LANG].googleFailure,
                 errors: {},
             },
         });
@@ -170,7 +218,6 @@ class Login extends React.Component {
     };
 
     render() {
-        console.log('LOGIN', this.props);
         const { isLoading, isOnline, router } = this.props;
         const { isErrorSocialLogin } = this.state;
         return (
@@ -186,22 +233,27 @@ class Login extends React.Component {
                                         className={styles.title}
                                         component="h3"
                                     >
-                                        Login
+                                        {trans[LANG].login}
                                     </Typography>
                                 )}
                                 subheader={router.query && router.query.href ? (
                                     <Typography
                                         className={styles.subheader}
                                     >
-                                        The page you tried to access
-                                        requires login.
+                                        {trans[LANG].requiresLogin}
                                     </Typography>
                                 ) : null}
                             />
                             <CardContent className={styles.content}>
                                 <div>
+                                    <span>{`${trans[LANG].notYetMember}?`}</span>
                                     <Link href="/register">
-                                        <span>not yet a member? sign up</span>
+                                        <Button
+                                            variant="outlined"
+                                            color="secondary"
+                                        >
+                                            {trans[LANG].signUp}
+                                        </Button>
                                     </Link>
                                 </div>
                                 {
@@ -214,23 +266,16 @@ class Login extends React.Component {
                                                 }
                                                 provider="google"
                                                 appId={process.env.NEXT_PUBLIC_GOOGLE_SOCIAL_LOGIN}
-                                                onLoginSuccess={
-                                                    this.handleSocialLogin
-                                                }
-                                                onLoginFailure={
-                                                    this
-                                                        .handleSocialLoginFailure
-                                                }
+                                                onLoginSuccess={this.handleSocialLogin}
+                                                onLoginFailure={this.handleSocialLoginFailure}
                                             >
                                                 <img src="/images/btn_google_signin_dark_pressed_web@2x.png" alt="google signin" />
                                             </SocialButton>
                                             <Typography
-                                                className={
-                                                    styles.lineWrapSpan
-                                                }
+                                                className={styles.lineWrapSpan}
                                                 variant="overline"
                                             >
-                                                or with your email
+                                                {trans[LANG].orWithEmail}
                                             </Typography>
                                         </>
                                     ) : null
@@ -248,7 +293,7 @@ class Login extends React.Component {
                         />
                     </main>
                 ) : (
-                    <NotifierInline message="You seem to be offline. Login is disabled." />
+                    <NotifierInline message={trans[LANG].offlineLoginDisabled} />
                 )}
             </>
         );
@@ -265,6 +310,7 @@ Login.propTypes = {
     roles: PropTypes.array,
     userId: PropTypes.any,
     errorReq: PropTypes.any,
+    errorSocialLogin: PropTypes.any,
     token: PropTypes.any,
     isOnline: PropTypes.bool.isRequired,
 };

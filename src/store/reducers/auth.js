@@ -30,6 +30,7 @@ const initialState = {
     isSocialLogin: false,
     isLogoutInit: false,
     isTokenExpired: false,
+    errorSocialLogin: null,
 };
 
 export default (state = initialState, action) => {
@@ -41,11 +42,16 @@ export default (state = initialState, action) => {
         }
     }
     case POST_LOGIN_INIT:
-    case POST_SOCIAL_LOGIN_GOOGLE_INIT:
         return {
             ...state,
             isLoading: true,
             errorReq: null,
+        };
+    case POST_SOCIAL_LOGIN_GOOGLE_INIT:
+        return {
+            ...state,
+            isLoading: true,
+            errorSocialLogin: null,
         };
     case POST_LOGIN_OK:
         return {
@@ -60,10 +66,15 @@ export default (state = initialState, action) => {
             isTokenExpired: false,
         };
     case POST_LOGIN_ERROR:
-    case POST_SOCIAL_LOGIN_GOOGLE_ERROR:
         return {
             ...state,
             errorReq: action.data,
+            isLoading: false,
+        };
+    case POST_SOCIAL_LOGIN_GOOGLE_ERROR:
+        return {
+            ...state,
+            errorSocialLogin: action.data,
             isLoading: false,
         };
     case GET_USER_PROFILE_INIT:

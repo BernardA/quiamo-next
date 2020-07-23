@@ -25,7 +25,6 @@ class ConfirmUser extends React.Component {
     }
 
     componentDidMount() {
-        console.log('CONFIRM-USER', this.props);
         const token = this.props.router.query.confirmationToken;
         if (token) {
             this.setState({ confirmationToken: token });

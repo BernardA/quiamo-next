@@ -7,7 +7,6 @@ import Link from './link';
 
 class MailboxChoices extends React.Component {
     render() {
-        console.log('CHOICES', this.props)
         const { routeParams } = this.props;
         return (
             <div className={styles.mbChoices}>

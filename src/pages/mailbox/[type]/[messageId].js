@@ -45,7 +45,6 @@ class MailboxHome extends React.Component {
     }
 
     componentDidMount() {
-        console.log('MAILBOX MOUNT', this.props);
         const { 
             router: { query: { type, messageId } },
             isAuth: { isAuthenticated }
@@ -79,8 +78,6 @@ class MailboxHome extends React.Component {
             router,
         } = this.props;
         const { query: { type, messageId } } = router;
-        console.log('MAILBOX UPDATE', this.props);
-        console.log('MAILBOX PREVPROPS', prevProps);
         if (prevProps.router.query !== router.query) {
             this.setState({
                 isActiveNewMessage: false,

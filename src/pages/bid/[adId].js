@@ -15,7 +15,6 @@ import { apiQl } from '../../store/sagas';
 
 class BidHome extends React.Component {
     componentDidMount() {
-        console.log('BID PROPS', this.props);
         const { isAuth: { isAuthenticated } } = this.props;
         if (!isAuthenticated) {
             handleIsNotAuthenticated();

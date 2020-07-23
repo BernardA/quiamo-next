@@ -190,7 +190,6 @@ class Account extends React.Component {
     };
 
     render() {
-        console.log('ACCOUNT', this.props);
         const { 
             classes, 
             isLoading, 
